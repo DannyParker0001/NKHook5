@@ -39,7 +39,7 @@ namespace NKHook5
             };
             GameEvents.startHandler(memlib);
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");
-            Console.WriteLine("Game hooked!");
+            Console.WriteLine("Game hooked & Events registered!");
             Console.WriteLine("Starting memory scanners...");
             MemScanner.startScanners(memlib);
             Console.WriteLine("Started memory scanners!");

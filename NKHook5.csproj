@@ -138,16 +138,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game.cs" />
-    <Compile Include="GameEvents.cs" />
-    <Compile Include="GameWaiter.cs" />
-    <Compile Include="Logger.cs" />
-    <Compile Include="MemScanner.cs" />
-    <Compile Include="NkPlugin.cs" />
-    <Compile Include="PluginLoader.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="API\Game.cs" />
+    <Compile Include="Events\MoneyChangedEvent.cs" />
+    <Compile Include="Events\NkEvent.cs" />
+    <Compile Include="Events\GameEvents.cs" />
+    <Compile Include="Events\MapLoadEvent.cs" />
+    <Compile Include="Events\SampleEvent.cs" />
+    <Compile Include="Events\SelectedTowerChangedEvent.cs" />
+    <Compile Include="Events\SelectedTowerPoppedBloonsChangedEvent.cs" />
+    <Compile Include="Launching\GameWaiter.cs" />
+    <Compile Include="API\Logger.cs" />
+    <Compile Include="Memory\MemScanner.cs" />
+    <Compile Include="API\NkPlugin.cs" />
+    <Compile Include="Launching\PluginLoader.cs" />
+    <Compile Include="Launching\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tower.cs" />
+    <Compile Include="API\Tower.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

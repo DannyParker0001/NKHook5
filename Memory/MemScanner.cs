@@ -1,4 +1,5 @@
 ﻿using Memory;
+using NKHook5.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -49,7 +50,7 @@ namespace NKHook5
             }
 
             //check if game is loading
-            GameEvents.mapLoadEvent += resetAll;
+            MapLoadEvent.Event += resetAll;
         }
 
         private static void resetAll(object sender, EventArgs e)
