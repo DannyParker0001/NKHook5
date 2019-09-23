@@ -22,8 +22,6 @@ namespace NKHook5
 
         static BackgroundWorker scanWorker = new BackgroundWorker();
         static BackgroundWorker validateWorker = new BackgroundWorker();
-        static BackgroundWorker cacheWorker = new BackgroundWorker();
-        static BackgroundWorker cacheResetWorker = new BackgroundWorker();
 
         public static void startScanners(Mem lib)
         {
@@ -32,16 +30,6 @@ namespace NKHook5
             if (!scanWorker.IsBusy)
             {
                 scanWorker.RunWorkerAsync();
-            }
-            cacheWorker.DoWork += cache;
-            if (!cacheWorker.IsBusy)
-            {
-                cacheWorker.RunWorkerAsync();
-            }
-            cacheResetWorker.DoWork += resetCache;
-            if (!cacheResetWorker.IsBusy)
-            {
-                cacheResetWorker.RunWorkerAsync();
             }
             validateWorker.DoWork += validateTowers;
             if (!validateWorker.IsBusy)
@@ -55,6 +43,7 @@ namespace NKHook5
 
         private static void resetAll(object sender, EventArgs e)
         {
+            GameTickEvent.cancelled = true;
             Logger.Log("Map is loading, cleaning load garbage...");
             foreach(Tower toGC in Game.getBTD5().getTowers())
             {
@@ -63,37 +52,7 @@ namespace NKHook5
             }
             Game.getBTD5().setGameTitle("NKHook5");
             Logger.Log("Cleaned up load garbage");
-        }
-
-        private static void cache(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                if (hoveredTowers.Count > 0)
-                {
-                    try
-                    {
-                        foreach (int cacheTower in hoveredTowers)
-                        {
-                            if (!hoveredCache.Contains(cacheTower))
-                            {
-                                hoveredCache.Add(cacheTower);
-                            }
-                        }
-                    } catch(Exception ex)
-                    {
-                        Logger.Log("Caught " + ex.GetType() + ", " + ex.Message);
-                    }
-                }
-            }
-        }
-        private static void resetCache(object sender, DoWorkEventArgs e)
-        {
-            while (true)
-            {
-                Thread.Sleep(100000);
-                hoveredCache = hoveredTowers;
-            }
+            GameTickEvent.cancelled = false;
         }
 
         public static int getHoveredTower()
@@ -118,8 +77,8 @@ namespace NKHook5
             {
                 Thread.Sleep(50);
                 List<int> towerResult = new List<int>();
-                hoveredTowers = new List<int>();
-                selectedTowers = new List<int>();
+                List<int> hoverList = new List<int>();
+                List<int> selectedList = new List<int>();
                 foreach (int tower in allTowers)
                 {
                     try
@@ -132,16 +91,18 @@ namespace NKHook5
                             int selectedCheck = tower + 0xF0;
                             if (memlib.readByte(hoverCheck.ToString("X")) > 0)
                             {
-                                hoveredTowers.Add(tower);
+                                hoverList.Add(tower);
                             }
                             int selectedValue = memlib.readByte(selectedCheck.ToString("X"));
                             if (selectedValue == 1)
                             {
-                                selectedTowers.Add(tower);
+                                selectedList.Add(tower);
                             }
                         }
                     }
                     catch (OverflowException) { }
+                    hoveredTowers = hoverList;
+                    selectedTowers = selectedList;
                 }
             }
         }
@@ -150,6 +111,7 @@ namespace NKHook5
             while (true)
             {
                 Thread.Sleep(5000);
+                GameTickEvent.cancelled = true;
                 List<long> scanResult = memlib.AoBScan("0? 01 00 01 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ??", true, true).Result.ToList();
                 List<int> towerResult = new List<int>();
                 hoveredTowers = new List<int>();
@@ -181,6 +143,8 @@ namespace NKHook5
                     catch (OverflowException) { }
                 }
                 allTowers = towerResult;
+                Thread.Sleep(1000);
+                GameTickEvent.cancelled = false;
             }
         }
     }

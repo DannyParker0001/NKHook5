@@ -10,6 +10,7 @@ namespace NKHook5.Events
 {
     public class GameTickEvent : NkEvent
     {
+        public static bool cancelled = false;
         public static event EventHandler<EventArgs> Event;
         public override void work(object sender, DoWorkEventArgs e)
         {
@@ -18,7 +19,8 @@ namespace NKHook5.Events
             //Event work
             while (true)
             {
-                Thread.Sleep(64);
+                Thread.Sleep(100);
+                if (cancelled) { continue; }
                 try
                 {
                     Event.Invoke(this, new EventArgs());

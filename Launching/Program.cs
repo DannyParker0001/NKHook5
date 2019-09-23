@@ -38,6 +38,7 @@ namespace NKHook5
                 proc.Kill();
             };
             GameEvents.startHandler(memlib);
+            new TowerShop();
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");
             Console.WriteLine("Game hooked & Events registered!");
             Console.WriteLine("Starting memory scanners...");

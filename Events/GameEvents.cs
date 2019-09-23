@@ -23,6 +23,9 @@ namespace NKHook5
             //Async selectedTowerChanged worker
             new SelectedTowerPoppedBloonsChangedEvent().startAsync();
 
+            //Async tick event
+            new GameTickEvent().startAsync();
+
             //Async money events
             new MoneyChangedEvent().startAsync();
             new MoneyIncreasedEvent().startAsync();
