@@ -141,6 +141,7 @@
     <Compile Include="API\Game.cs" />
     <Compile Include="API\TowerShop.cs" />
     <Compile Include="Events\GameTickEvent.cs" />
+    <Compile Include="Events\HealthIncreaseEvent.cs" />
     <Compile Include="Events\HealthDecreaseEvent.cs" />
     <Compile Include="Events\MoneyChangedEvent.cs" />
     <Compile Include="Events\MoneyDecreasedEvent.cs" />
@@ -148,6 +149,7 @@
     <Compile Include="Events\NkEvent.cs" />
     <Compile Include="Events\GameEvents.cs" />
     <Compile Include="Events\MapLoadEvent.cs" />
+    <Compile Include="Events\RoundStartEvent.cs" />
     <Compile Include="Events\SampleEvent.cs" />
     <Compile Include="Events\SelectedTowerChangedEvent.cs" />
     <Compile Include="Events\SelectedTowerPoppedBloonsChangedEvent.cs" />

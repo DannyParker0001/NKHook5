@@ -92,6 +92,10 @@ namespace NKHook5
         {
             return memlib.readInt("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88");
         }
+        public int getRound()
+        {
+            return memlib.readInt("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14");
+        }
 
         /*
          * Setters here
@@ -111,6 +115,10 @@ namespace NKHook5
         public void setHealth(int amount)
         {
             memlib.writeMemory("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88", "int", amount.ToString());
+        }
+        public void setRound(int round)
+        {
+            memlib.writeMemory("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14", "int", round.ToString());
         }
     }
 }

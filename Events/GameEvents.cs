@@ -33,6 +33,9 @@ namespace NKHook5
 
             //Async health events
             new HealthDecreaseEvent().startAsync();
+
+            //Async round events
+            new RoundStartEvent().startAsync();
         }
     }
 }

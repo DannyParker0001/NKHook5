@@ -1,6 +1,7 @@
 ﻿using Memory;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,16 +34,22 @@ namespace NKHook5
             TowerShop.instance = this;
 
             //scan for tower prices
-            dartMonkeyAddress = (int)memlib.AoBScan("0xC8 0x00 0x00 0x00 0x01", true, true).Result.ToList()[0];
-            tackShooterAddress = (int)memlib.AoBScan("0x68 0x01 0x00 0x00 0x02", true, true).Result.ToList()[0];
-            sniperMonkeyAddress = (int)memlib.AoBScan("0x5E 0x01 0x00 0x00 0x03", true, true).Result.ToList()[0];
-            boomerangMonkeyAddress = (int)memlib.AoBScan("0x90 0x01 0x00 0x00 0x04", true, true).Result.ToList()[0];
-            ninjaMonkeyAddress = (int)memlib.AoBScan("0xF4 0x01 0x00 0x00 0x06", true, true).Result.ToList()[0];
-            bombTowerAddress = (int)memlib.AoBScan("0x8A 0x02 0x00 0x00 0x07", true, true).Result.ToList()[0];
-            iceTowerAddress = (int)memlib.AoBScan("0x2C 0x01 0x00 0x00 0x08", true, true).Result.ToList()[0];
-            glueGunnerAddress = (int)memlib.AoBScan("0x0E 0x01 0x00 0x00 0x09", true, true).Result.ToList()[0];
-            monkeySailorAddress = (int)memlib.AoBScan("0x0D 0x02 0x00 0x00 0x0B", true, true).Result.ToList()[0];
-            monkeyPilotAddress = (int)memlib.AoBScan("0x9D 0x03 0x00 0x00 0x0C", true, true).Result.ToList()[0];
+
+            BackgroundWorker shopWorker = new BackgroundWorker();
+            shopWorker.DoWork += (object sender, DoWorkEventArgs args) =>
+            {
+                dartMonkeyAddress = (int)memlib.AoBScan("0xC8 0x00 0x00 0x00 0x01", true, true).Result.ToList()[0];
+                tackShooterAddress = (int)memlib.AoBScan("0x68 0x01 0x00 0x00 0x02", true, true).Result.ToList()[0];
+                sniperMonkeyAddress = (int)memlib.AoBScan("0x5E 0x01 0x00 0x00 0x03", true, true).Result.ToList()[0];
+                boomerangMonkeyAddress = (int)memlib.AoBScan("0x90 0x01 0x00 0x00 0x04", true, true).Result.ToList()[0];
+                ninjaMonkeyAddress = (int)memlib.AoBScan("0xF4 0x01 0x00 0x00 0x06", true, true).Result.ToList()[0];
+                bombTowerAddress = (int)memlib.AoBScan("0x8A 0x02 0x00 0x00 0x07", true, true).Result.ToList()[0];
+                iceTowerAddress = (int)memlib.AoBScan("0x2C 0x01 0x00 0x00 0x08", true, true).Result.ToList()[0];
+                glueGunnerAddress = (int)memlib.AoBScan("0x0E 0x01 0x00 0x00 0x09", true, true).Result.ToList()[0];
+                monkeySailorAddress = (int)memlib.AoBScan("0x0D 0x02 0x00 0x00 0x0B", true, true).Result.ToList()[0];
+                monkeyPilotAddress = (int)memlib.AoBScan("0x9D 0x03 0x00 0x00 0x0C", true, true).Result.ToList()[0];
+            };
+            shopWorker.RunWorkerAsync();
         }
 
         /*
