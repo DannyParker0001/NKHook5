@@ -88,6 +88,10 @@ namespace NKHook5
         {
             return memlib.readInt("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x118");
         }
+        public int getHealth()
+        {
+            return memlib.readInt("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88");
+        }
 
         /*
          * Setters here
@@ -103,6 +107,10 @@ namespace NKHook5
         public void setMonkeyMoney(int amount)
         {
             memlib.writeMemory("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x118", "int", amount.ToString());
+        }
+        public void setHealth(int amount)
+        {
+            memlib.writeMemory("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88", "int", amount.ToString());
         }
     }
 }

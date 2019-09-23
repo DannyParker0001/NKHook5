@@ -27,6 +27,9 @@ namespace NKHook5
             new MoneyChangedEvent().startAsync();
             new MoneyIncreasedEvent().startAsync();
             new MoneyDecreasedEvent().startAsync();
+
+            //Async health events
+            new HealthDecreaseEvent().startAsync();
         }
     }
 }

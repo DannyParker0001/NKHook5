@@ -140,6 +140,7 @@
   <ItemGroup>
     <Compile Include="API\Game.cs" />
     <Compile Include="Events\GameTickEvent.cs" />
+    <Compile Include="Events\HealthDecreaseEvent.cs" />
     <Compile Include="Events\MoneyChangedEvent.cs" />
     <Compile Include="Events\MoneyDecreasedEvent.cs" />
     <Compile Include="Events\MoneyIncreasedEvent.cs" />

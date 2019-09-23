@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NKHook5", "NKHook5.csproj", "{4C8D11CF-0F3C-4772-8F33-693530F71A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test Plugin", "..\Test Plugin\Test Plugin.csproj", "{A2561BFC-B001-4F46-8397-36B74D348058}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Popped is Money", "..\Test Plugin\Popped is Money.csproj", "{A2561BFC-B001-4F46-8397-36B74D348058}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loosing health costs Money", "..\Loosing health costs Money\Loosing health costs Money.csproj", "{80129263-6671-4402-B832-84BDD48D7BCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A2561BFC-B001-4F46-8397-36B74D348058}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2561BFC-B001-4F46-8397-36B74D348058}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2561BFC-B001-4F46-8397-36B74D348058}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80129263-6671-4402-B832-84BDD48D7BCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80129263-6671-4402-B832-84BDD48D7BCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80129263-6671-4402-B832-84BDD48D7BCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80129263-6671-4402-B832-84BDD48D7BCE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
