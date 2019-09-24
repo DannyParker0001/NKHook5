@@ -21,7 +21,11 @@ namespace NKHook5.Events
                 int newRound = memlib.readInt("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14");
                 if (newRound > round)
                 {
-                    Event.Invoke(this, new EventArgs());
+                    try
+                    {
+                        Event.Invoke(this, new EventArgs());
+                    }
+                    catch (NullReferenceException) { }
                 }
                 round = newRound;
             }
