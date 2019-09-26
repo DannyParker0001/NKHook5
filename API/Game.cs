@@ -1,4 +1,5 @@
 ﻿using Memory;
+using NKHook5.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -96,6 +97,22 @@ namespace NKHook5
         {
             return memlib.readInt("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14");
         }
+        public float getMouseX()
+        {
+            return memlib.readFloat("BTD5-Win.exe+00884438,0x10,0x20");
+        }
+        public float getMouseY()
+        {
+            return memlib.readFloat("BTD5-Win.exe+008844B0,0x8,0x24");
+        }
+        public int getScreenMouseX()
+        {
+            return memlib.readInt("gameoverlayrenderer.dll+1256B8");
+        }
+        public int getScreenMouseY()
+        {
+            return memlib.readInt("gameoverlayrenderer.dll+1256BC");
+        }
 
         /*
          * Setters here
@@ -106,6 +123,15 @@ namespace NKHook5
         }
         public void setMoney(int amount)
         {
+            if(amount>getMoney())
+            {
+                MoneyIncreasedEvent.cancelQueue++;
+            }
+            if(amount<getMoney())
+            {
+                MoneyDecreasedEvent.cancelQueue++;
+            }
+            MoneyChangedEvent.cancelQueue++;
             memlib.writeMemory("BTD5-Win.exe+008844B0,0xC4,0x90", "double", amount.ToString());
         }
         public void setMonkeyMoney(int amount)

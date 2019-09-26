@@ -47,6 +47,29 @@ namespace NKHook5
             }
             return true;
         }
+        public int getPosX()
+        {
+            int xOffset = towerAddr + 0x92;
+            return memlib.readInt(xOffset.ToString("X"));
+        }
+        public int getPosY()
+        {
+            int yOffset = towerAddr + 0x96;
+            return memlib.readInt(yOffset.ToString("X"));
+        }
+        public int getUpgrades(Path p)
+        {
+            if (p.Equals(Path.Left))
+            {
+                int path1 = towerAddr + 0x138;
+                return memlib.readInt(path1.ToString("X"));
+            }
+            else
+            {
+                int path2 = towerAddr + 0x13C;
+                return memlib.readInt(path2.ToString("X"));
+            }
+        }
 
         /*
          * Setters
@@ -85,6 +108,38 @@ namespace NKHook5
                 value = 1;
             }
             memlib.writeMemory(sellableOffset.ToString("X"), "byte", value.ToString());
+        }
+        public void setPosX(int x)
+        {
+            int xOffset = towerAddr + 0x92;
+            memlib.writeMemory(xOffset.ToString("X"), "int", x.ToString());
+        }
+        public void setPosY(int y)
+        {
+            int yOffset = towerAddr + 0x96;
+            memlib.writeMemory(yOffset.ToString("X"), "int", y.ToString());
+        }
+        public void setUpgrades(Path p, int upgrade)
+        {
+            if (p.Equals(Path.Left))
+            {
+                int path1 = towerAddr + 0x138;
+                memlib.writeMemory(path1.ToString("X"), "int", upgrade.ToString());
+            }
+            else
+            {
+                int path2 = towerAddr + 0x13C;
+                memlib.writeMemory(path2.ToString("X"), "int", upgrade.ToString());
+            }
+        }
+
+        /*
+         * Selectors/Enums
+         */
+        public enum Path
+        {
+            Left,
+            Right
         }
     }
 }

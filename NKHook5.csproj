@@ -141,12 +141,15 @@
     <Compile Include="API\Game.cs" />
     <Compile Include="API\TowerShop.cs" />
     <Compile Include="Events\Args\MoneyChangedEventArgs.cs" />
+    <Compile Include="Events\Args\MouseMoveEventArgs.cs" />
     <Compile Include="Events\GameTickEvent.cs" />
     <Compile Include="Events\HealthIncreaseEvent.cs" />
     <Compile Include="Events\HealthDecreaseEvent.cs" />
     <Compile Include="Events\MoneyChangedEvent.cs" />
     <Compile Include="Events\MoneyDecreasedEvent.cs" />
     <Compile Include="Events\MoneyIncreasedEvent.cs" />
+    <Compile Include="Events\MouseUpEvent.cs" />
+    <Compile Include="Events\MouseMoveEvent.cs" />
     <Compile Include="Events\NkEvent.cs" />
     <Compile Include="Events\GameEvents.cs" />
     <Compile Include="Events\MapLoadEvent.cs" />

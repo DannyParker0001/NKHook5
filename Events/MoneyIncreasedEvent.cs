@@ -12,6 +12,8 @@ namespace NKHook5.Events
     public class MoneyIncreasedEvent : NkEvent
     {
         public static event EventHandler<MoneyChangedEventArgs> Event;
+
+        internal static int cancelQueue = 0;
         public override void work(object sender, DoWorkEventArgs e)
         {
             base.work(sender, e);
@@ -23,12 +25,20 @@ namespace NKHook5.Events
                 double newMoney = memlib.readDouble("BTD5-Win.exe+008844B0,0xC4,0x90");
                 if (newMoney > money)
                 {
-                    try
+                    if (cancelQueue > 0)
                     {
-                        MoneyChangedEventArgs args = new MoneyChangedEventArgs(money, newMoney);
-                        Event.Invoke(this, args);
+                        cancelQueue--;
+                        continue;
                     }
-                    catch (NullReferenceException) { }
+                    else
+                    {
+                        try
+                        {
+                            MoneyChangedEventArgs args = new MoneyChangedEventArgs(money, newMoney);
+                            Event.Invoke(this, args);
+                        }
+                        catch (NullReferenceException) { }
+                    }
                 }
                 money = newMoney;
             }

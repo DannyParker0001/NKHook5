@@ -36,6 +36,10 @@ namespace NKHook5
 
             //Async round events
             new RoundStartEvent().startAsync();
+
+            //Mouse events
+            new MouseMoveEvent().startAsync();
+            new MouseUpEvent().startAsync();
         }
     }
 }
