@@ -11,6 +11,14 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace NKHook5
 {
+    /*
+     * NKHook5
+     * All code under the NKHook (NKHook.*) namespace is protected by LGPL-3.0
+     * More info can be found here: https://www.gnu.org/licenses/lgpl-3.0.en.html
+     * The license can be changed at any time
+     * In an event as such any previous code written under a previous license will
+     * be subject to the new license.
+     */
     internal class Program
     {
 
