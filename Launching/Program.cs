@@ -24,6 +24,8 @@ namespace NKHook5
         {
             Console.Title = "NKHook5-Console";
             Console.WriteLine("NKHook5 Loading...");
+            Console.WriteLine("Thanks to NewAgeSoftware for providing tools for memory hacking.");
+            Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
             Console.WriteLine("Starting BTD5");
             Process.Start("steam://rungameid/306020");
             Console.WriteLine("Waiting for game...");

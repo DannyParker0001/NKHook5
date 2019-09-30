@@ -40,6 +40,11 @@ namespace NKHook5
             //Mouse events
             new MouseMoveEvent().startAsync();
             new MouseUpEvent().startAsync();
+
+            //Screen events
+            new ScreenChangedEvent().startAsync();
+            new ScreenOpenEvent().startAsync();
+            new ScreenCloseEvent().startAsync();
         }
     }
 }

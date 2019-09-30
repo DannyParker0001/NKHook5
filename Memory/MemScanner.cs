@@ -8,6 +8,11 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+/*
+ * Class written by New Age Software
+ * NewAge Discord server: https://discord.gg/bVNQNzJ
+ * Memory.dll GitHub repository: https://github.com/erfg12/memory.dll
+ */
 namespace NKHook5
 {
     internal class MemScanner
@@ -19,6 +24,7 @@ namespace NKHook5
         public static List<int> allTowers = new List<int>();
 
         public static List<int> hoveredCache = new List<int>();
+        public static List<int> badCache = new List<int>();
 
         static BackgroundWorker scanWorker = new BackgroundWorker();
         static BackgroundWorker validateWorker = new BackgroundWorker();
@@ -39,6 +45,27 @@ namespace NKHook5
 
             //check if game is loading
             MapLoadEvent.Event += resetAll;
+            //check if screen status changes for first time to cache bad tower addresses
+            ScreenOpenEvent.Event += storeBadCache;
+        }
+
+        //cache the bad towers
+        static bool need2Cache = true;
+        private static void storeBadCache(object sender, EventArgs e)
+        {
+            if (need2Cache)
+            {
+                Logger.Log("CACHING BAD TOWERS ADDRESSES! DO NOT DO ANYTHING UNTIL FINISHED!");
+                Thread.Sleep(4000);
+                List<long> scanResult = memlib.AoBScan("98 FB CF 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? 00 00 00 00", true, true).Result.ToList();
+                foreach(long result in scanResult)
+                {
+                    if(!badCache.Contains((int)result))
+                        badCache.Add((int)result);
+                }
+                Logger.Log("Caching complete!");
+                need2Cache = false;
+            }
         }
 
         private static void resetAll(object sender, EventArgs e)
@@ -76,27 +103,31 @@ namespace NKHook5
             while (true)
             {
                 Thread.Sleep(50);
-                List<int> towerResult = new List<int>();
                 List<int> hoverList = new List<int>();
                 List<int> selectedList = new List<int>();
                 foreach (int tower in allTowers)
                 {
                     try
                     {
+                        int validCheck = tower + 0x14;
+                        int validCheck2 = tower + 0x38;
+                        int validCheck3 = tower + 0x48;
                         int soldCheck = tower + 0x12C;
-                        if (memlib.readByte(soldCheck.ToString("X")) < 1)
+                        int hoverCheck = tower + 0x215;
+                        int selectedCheck = tower + 0xF0;
+                        if (memlib.readInt(validCheck.ToString("X")) > 0 && memlib.readInt(validCheck2.ToString("X")) > 0 && memlib.readInt(validCheck3.ToString("X")) > 0)
                         {
-                            towerResult.Add(tower);
-                            int hoverCheck = tower + 0x215;
-                            int selectedCheck = tower + 0xF0;
-                            if (memlib.readByte(hoverCheck.ToString("X")) > 0)
+                            if (memlib.readByte(soldCheck.ToString("X")) < 1)
                             {
-                                hoverList.Add(tower);
-                            }
-                            int selectedValue = memlib.readByte(selectedCheck.ToString("X"));
-                            if (selectedValue == 1)
-                            {
-                                selectedList.Add(tower);
+                                allTowers.Add(tower);
+                                if (memlib.readByte(hoverCheck.ToString("X")) > 0)
+                                {
+                                    hoveredTowers.Add(tower);
+                                }
+                                if (memlib.readByte(selectedCheck.ToString("X")) > 0)
+                                {
+                                    selectedTowers.Add(tower);
+                                }
                             }
                         }
                     }
@@ -112,37 +143,50 @@ namespace NKHook5
             {
                 Thread.Sleep(5000);
                 GameTickEvent.cancelled = true;
-                List<long> scanResult = memlib.AoBScan("0? 01 00 01 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ??", true, true).Result.ToList();
-                List<int> towerResult = new List<int>();
+                List<long> scanResult = memlib.AoBScan("98 FB CF 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? 00 00 00 00", true, true).Result.ToList();
                 hoveredTowers = new List<int>();
                 selectedTowers = new List<int>();
+                allTowers = new List<int>();
+                List<int> invalidTowers = new List<int>();
                 foreach (long result in scanResult)
                 {
                     try
                     {
-                        int baseV = (int)result & int.MaxValue;
-                        string hexS = baseV.ToString("X");
-                        int hexI = int.Parse(hexS, System.Globalization.NumberStyles.HexNumber);
-                        hexI -= 0xF0;
-                        int soldCheck = hexI + 0x12C;
-                        if (memlib.readByte(soldCheck.ToString("X")) < 1)
+                        int tower = int.Parse(result.ToString("X"), System.Globalization.NumberStyles.HexNumber);
+                        //Check if its cached as bad, dont even bother doing anything else.
+                        if (badCache.Contains(tower))
                         {
-                            towerResult.Add(hexI);
-                            int hoverCheck = hexI + 0x215;
-                            int selectedCheck = hexI + 0xF0;
-                            if (memlib.readByte(hoverCheck.ToString("X")) > 0)
+                            continue;
+                        }
+                        int validCheck = tower + 0x14;
+                        int validCheck2 = tower + 0x38;
+                        int validCheck3 = tower + 0x48;
+                        int soldCheck = tower + 0x12C;
+                        int hoverCheck = tower + 0x215;
+                        int selectedCheck = tower + 0xF0;
+                        if (memlib.readInt(validCheck.ToString("X")) > 0 && memlib.readInt(validCheck2.ToString("X")) > 0 && memlib.readLong(validCheck3.ToString("X")) > 0)
+                        {
+                            if (memlib.readByte(soldCheck.ToString("X")) < 1)
                             {
-                                hoveredTowers.Add(hexI);
+                                allTowers.Add(tower);
+                                if (memlib.readByte(hoverCheck.ToString("X")) > 0)
+                                {
+                                    hoveredTowers.Add(tower);
+                                }
+                                if (memlib.readByte(selectedCheck.ToString("X")) > 0)
+                                {
+                                    selectedTowers.Add(tower);
+                                    Logger.Log(tower.ToString("X"));
+                                }
                             }
-                            if (memlib.readByte(selectedCheck.ToString("X")) > 0)
-                            {
-                                selectedTowers.Add(hexI);
-                            }
+                        }
+                        else
+                        {
+                            invalidTowers.Add(tower);
                         }
                     }
                     catch (OverflowException) { }
                 }
-                allTowers = towerResult;
                 Thread.Sleep(1000);
                 GameTickEvent.cancelled = false;
             }
