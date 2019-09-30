@@ -82,7 +82,7 @@
     <Compile Include="Events\ScreenOpenEvent.cs" />
     <Compile Include="Events\SelectedTowerChangedEvent.cs" />
     <Compile Include="Events\SelectedTowerPoppedBloonsChangedEvent.cs" />
-    <Compile Include="Launching\GameWaiter.cs" />
+    <Compile Include="Launching\GameLauncher.cs" />
     <Compile Include="API\Logger.cs" />
     <Compile Include="LowInterface\Register.cs" />
     <Compile Include="LowInterface\UpgradeLowInterface.cs" />

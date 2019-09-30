@@ -146,5 +146,17 @@ namespace NKHook5
         {
             memlib.writeMemory("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14", "int", round.ToString());
         }
+
+        /*
+         * Game functions
+         */
+        public void safeExit()
+        {
+            gameProc.Close();
+        }
+        public void killGame()
+        {
+            gameProc.Kill();
+        }
     }
 }

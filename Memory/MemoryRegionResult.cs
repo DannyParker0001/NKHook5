@@ -8,6 +8,7 @@ using System.Threading.Tasks;
  * Class written by New Age Software
  * NewAge Discord server: https://discord.gg/bVNQNzJ
  * Memory.dll GitHub repository: https://github.com/erfg12/memory.dll
+ * This class is protected by the 'DBAD' license: https://dbad-license.org/
  */
 namespace Memory
 {
