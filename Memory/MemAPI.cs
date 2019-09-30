@@ -15,9 +15,12 @@ using System.Collections.Concurrent;
 
 namespace Memory
 {
-    /// <summary>
-    /// Memory.dll class. Full documentation at https://github.com/erfg12/memory.dll/wiki
-    /// </summary>
+    /*
+     * Class written by New Age Software
+     * NewAge Discord server: https://discord.gg/bVNQNzJ
+     * Memory.dll GitHub repository: https://github.com/erfg12/memory.dll
+     * This class is protected by the 'DBAD' license: https://dbad-license.org/
+     */
     public class Mem
     {
         #region DllImports

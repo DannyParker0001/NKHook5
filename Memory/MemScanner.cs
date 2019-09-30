@@ -100,42 +100,46 @@ namespace NKHook5
 
         private static void validateTowers(object sender, DoWorkEventArgs e)
         {
-            while (true)
+            try
             {
-                Thread.Sleep(50);
-                List<int> hoverList = new List<int>();
-                List<int> selectedList = new List<int>();
-                foreach (int tower in allTowers)
+                while (true)
                 {
-                    try
+                    Thread.Sleep(50);
+                    List<int> hoverList = new List<int>();
+                    List<int> selectedList = new List<int>();
+                    foreach (int tower in allTowers)
                     {
-                        int validCheck = tower + 0x14;
-                        int validCheck2 = tower + 0x38;
-                        int validCheck3 = tower + 0x48;
-                        int soldCheck = tower + 0x12C;
-                        int hoverCheck = tower + 0x215;
-                        int selectedCheck = tower + 0xF0;
-                        if (memlib.readInt(validCheck.ToString("X")) > 0 && memlib.readInt(validCheck2.ToString("X")) > 0 && memlib.readInt(validCheck3.ToString("X")) > 0)
+                        try
                         {
-                            if (memlib.readByte(soldCheck.ToString("X")) < 1)
+                            int validCheck = tower + 0x14;
+                            int validCheck2 = tower + 0x38;
+                            int validCheck3 = tower + 0x48;
+                            int soldCheck = tower + 0x12C;
+                            int hoverCheck = tower + 0x215;
+                            int selectedCheck = tower + 0xF0;
+                            if (memlib.readInt(validCheck.ToString("X")) > 0 && memlib.readInt(validCheck2.ToString("X")) > 0 && memlib.readInt(validCheck3.ToString("X")) > 0)
                             {
-                                allTowers.Add(tower);
-                                if (memlib.readByte(hoverCheck.ToString("X")) > 0)
+                                if (memlib.readByte(soldCheck.ToString("X")) < 1)
                                 {
-                                    hoveredTowers.Add(tower);
-                                }
-                                if (memlib.readByte(selectedCheck.ToString("X")) > 0)
-                                {
-                                    selectedTowers.Add(tower);
+                                    allTowers.Add(tower);
+                                    if (memlib.readByte(hoverCheck.ToString("X")) > 0)
+                                    {
+                                        hoveredTowers.Add(tower);
+                                    }
+                                    if (memlib.readByte(selectedCheck.ToString("X")) > 0)
+                                    {
+                                        selectedTowers.Add(tower);
+                                    }
                                 }
                             }
                         }
+                        catch (OverflowException) { }
+                        hoveredTowers = hoverList;
+                        selectedTowers = selectedList;
                     }
-                    catch (OverflowException) { }
-                    hoveredTowers = hoverList;
-                    selectedTowers = selectedList;
                 }
             }
+            catch (InvalidOperationException) { }
         }
         private static void scan(object sender, DoWorkEventArgs e)
         {
