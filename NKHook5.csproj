@@ -86,6 +86,7 @@
     <Compile Include="API\Logger.cs" />
     <Compile Include="LowInterface\Register.cs" />
     <Compile Include="LowInterface\UpgradeLowInterface.cs" />
+    <Compile Include="Memory\FreSus.cs" />
     <Compile Include="Memory\MemAPI.cs" />
     <Compile Include="Memory\MemoryRegionResult.cs" />
     <Compile Include="Memory\MemScanner.cs" />

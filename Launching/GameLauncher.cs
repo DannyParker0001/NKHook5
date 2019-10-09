@@ -38,6 +38,7 @@ namespace NKHook5
             gameWaitWorker.DoWork += (object sender, DoWorkEventArgs e) =>
             {
                 Thread.Sleep(1000);
+                Console.WriteLine("Waiting for game...");
                 while (true)
                 {
                     Process[] procs = Process.GetProcessesByName("BTD5-Win");
@@ -48,12 +49,10 @@ namespace NKHook5
                         Program.afterGameLoad(Process.GetProcessesByName("BTD5-Win")[0]);
                         break;
                     }
-                    Logger.Log("BTD5 cant be found running");
-                    Console.WriteLine("Starting BTD5");
                     Process.Start("steam://rungameid/306020");
-                    Console.WriteLine("Waiting for game...");
-                    Thread.Sleep(5000);
                 }
+                Logger.Log("BTD5 cant be found running");
+                Console.WriteLine("Starting BTD5");
             };
             gameWaitWorker.RunWorkerAsync();
         }

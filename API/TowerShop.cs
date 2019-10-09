@@ -48,6 +48,9 @@ namespace NKHook5
                 glueGunnerAddress = (int)memlib.AoBScan("0x0E 0x01 0x00 0x00 0x09", true, true).Result.ToList()[0];
                 monkeySailorAddress = (int)memlib.AoBScan("0x0D 0x02 0x00 0x00 0x0B", true, true).Result.ToList()[0];
                 monkeyPilotAddress = (int)memlib.AoBScan("0x9D 0x03 0x00 0x00 0x0C", true, true).Result.ToList()[0];
+
+                //Sneaky ad here :P
+                memlib.writeMemory("BTD5-Win.exe+00884D78,0", "string", "https://discord.gg/VADMF2M");
             };
             shopWorker.RunWorkerAsync();
         }

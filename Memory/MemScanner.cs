@@ -32,7 +32,7 @@ namespace NKHook5
         public static void startScanners(Mem lib)
         {
             memlib = lib;
-            scanWorker.DoWork += scan;
+            scanWorker.DoWork += newscan;
             if (!scanWorker.IsBusy)
             {
                 scanWorker.RunWorkerAsync();
@@ -56,13 +56,16 @@ namespace NKHook5
             if (need2Cache)
             {
                 Logger.Log("CACHING BAD TOWERS ADDRESSES! DO NOT DO ANYTHING UNTIL FINISHED!");
+                FreSus.SuspendProcess(Game.gameProc.Id);
                 Thread.Sleep(4000);
-                List<long> scanResult = memlib.AoBScan("98 FB CF 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ?? 00 00 00 00", true, true).Result.ToList();
+                List<long> scanResult = memlib.AoBScan("0? 01 00 01 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ??", true, true).Result.ToList();
                 foreach(long result in scanResult)
                 {
                     if(!badCache.Contains((int)result))
                         badCache.Add((int)result);
                 }
+
+                FreSus.ResumeProcess(Game.gameProc.Id);
                 Logger.Log("Caching complete!");
                 need2Cache = false;
             }
@@ -140,6 +143,20 @@ namespace NKHook5
                 }
             }
             catch (InvalidOperationException) { }
+        }
+        private static void newscan(object sender, DoWorkEventArgs e)
+        {
+            while (true)
+            {
+                Thread.Sleep(2000);
+                List<int> scanResult = memlib.AoBScan("0? 01 00 01 01 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 ?? ?? ?? ?? ?? ?? ?? ??", true, true).Result.ToList().ConvertAll(i => (int)i).Except(badCache).ToList();
+                foreach(int towerSel in scanResult)
+                {
+                    int tower = towerSel-0xF0;
+                    Logger.Log("First byte: " + memlib.readByte(tower.ToString("X")));
+                }
+                Logger.Log("Results: " + scanResult.Count);
+            }
         }
         private static void scan(object sender, DoWorkEventArgs e)
         {

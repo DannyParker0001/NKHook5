@@ -16,7 +16,7 @@ namespace NKHook5
         static extern int SetWindowText(IntPtr hWnd, string text);
 
         static Game instance = null;
-        static Process gameProc = null;
+        internal static Process gameProc = null;
         static Mem memlib = Program.memlib;
 
         public static Game getBTD5()
