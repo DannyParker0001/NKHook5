@@ -41,7 +41,7 @@ namespace NKHook5
         {
             allTowers = new List<int>();
             //Logger.Log(int.Parse(memlib.getCode("BTD5-Win.exe+008844B0,78,3C,0,0").ToString()).ToString("X"));
-            for(int i = 0; i<amount; i+=0x4)
+            for(int i = 0; i<(amount*0x4); i+=0x4)
             {
                 allTowers.Add(int.Parse(memlib.getCode("BTD5-Win.exe+008844B0,78,3C," + i.ToString("X") + ",0").ToString()));
             }

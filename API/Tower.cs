@@ -1,6 +1,7 @@
 ﻿using Memory;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -132,6 +133,28 @@ namespace NKHook5
                 memlib.writeMemory(path2.ToString("X"), "int", upgrade.ToString());
             }
         }
+        public void setColor(Color color)
+        {
+            setColorR(color.R);
+            setColorG(color.G);
+            setColorB(color.B);
+        }
+        public void setColorR(int R)
+        {
+            int colorR = towerAddr + 0x108;
+            memlib.writeMemory(colorR.ToString("X"), "int", R.ToString());
+        }
+        public void setColorG(int G)
+        {
+            int colorG = towerAddr + 0x109;
+            memlib.writeMemory(colorG.ToString("X"), "int", G.ToString());
+        }
+        public void setColorB(int B)
+        {
+            int colorB = towerAddr + 0x10A;
+            memlib.writeMemory(colorB.ToString("X"), "int", B.ToString());
+        }
+
 
         /*
          * Selectors/Enums
