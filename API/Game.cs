@@ -47,39 +47,21 @@ namespace NKHook5
             return returntowers;
         }
 
-        int prevSelected = 0;
         public Tower getSelectedTower()
         {
             try
             {
-                if (MemScanner.selectedTowers.Count > 0)
+                foreach (int tower in MemScanner.allTowers)
                 {
-                    foreach(int towerId in MemScanner.selectedTowers)
+                    Tower towerObj = new Tower(tower);
+                    if (towerObj.isSelected())
                     {
-                        if (towerId == prevSelected)
-                        {
-                            return new Tower(towerId);
-                        }
-                        else
-                        {
-                            continue;
-                        }
+                        return towerObj;
                     }
-                    return new Tower(MemScanner.selectedTowers[MemScanner.selectedTowers.Count - 1]);
-                }
-                else
-                {
-                    return null;
                 }
             }
-            catch (Exception)
-            {
-                /*
-                Logger.Log("Exception caught. Ths was expected in 'Game.getSelectedTowers'");
-                Logger.Log(ex.StackTrace);
-                */
-                return null;
-            }
+            catch (InvalidOperationException) { }
+            return null;
         }
         public double getMoney()
         {

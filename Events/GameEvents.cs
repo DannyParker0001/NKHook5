@@ -45,6 +45,10 @@ namespace NKHook5
             new ScreenChangedEvent().startAsync();
             new ScreenOpenEvent().startAsync();
             new ScreenCloseEvent().startAsync();
+
+            //Tower events
+            new TowerPlaceEvent().startAsync();
+            new TowerDeleteEvent().startAsync();
         }
     }
 }

@@ -82,6 +82,8 @@
     <Compile Include="Events\ScreenOpenEvent.cs" />
     <Compile Include="Events\SelectedTowerChangedEvent.cs" />
     <Compile Include="Events\SelectedTowerPoppedBloonsChangedEvent.cs" />
+    <Compile Include="Events\TowerDeleteEvent.cs" />
+    <Compile Include="Events\TowerPlaceEvent.cs" />
     <Compile Include="Launching\GameLauncher.cs" />
     <Compile Include="API\Logger.cs" />
     <Compile Include="LowInterface\Register.cs" />
