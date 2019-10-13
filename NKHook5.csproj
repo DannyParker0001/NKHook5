@@ -91,7 +91,6 @@
     <Compile Include="Memory\FreSus.cs" />
     <Compile Include="Memory\MemAPI.cs" />
     <Compile Include="Memory\MemoryRegionResult.cs" />
-    <Compile Include="Memory\MemScanner.cs" />
     <Compile Include="API\NkPlugin.cs" />
     <Compile Include="Launching\PluginLoader.cs" />
     <Compile Include="Launching\Program.cs" />

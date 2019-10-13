@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NKHook5.Events
@@ -17,6 +18,7 @@ namespace NKHook5.Events
             //Event work
             while (true)
             {
+                Thread.Sleep(threadDelay);
             }
         }
     }

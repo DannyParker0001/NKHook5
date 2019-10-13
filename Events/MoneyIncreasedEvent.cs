@@ -22,6 +22,7 @@ namespace NKHook5.Events
             double money = 0;
             while (true)
             {
+                Thread.Sleep(threadDelay);
                 double newMoney = memlib.readDouble("BTD5-Win.exe+008844B0,0xC4,0x90");
                 if (newMoney > money)
                 {

@@ -21,7 +21,7 @@ namespace NKHook5.Events
             float mouseY = 0;
             while (true)
             {
-                Thread.Sleep(10);
+                Thread.Sleep(threadDelay);
                 float newX = memlib.readFloat("BTD5-Win.exe+00884438,0x10,0x20");
                 float newY = memlib.readFloat("BTD5-Win.exe+008844B0,0x8,0x24");
                 if (newX != mouseX || newY != mouseY)

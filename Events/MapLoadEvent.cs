@@ -20,6 +20,7 @@ namespace NKHook5.Events
             //Event work
             while (true)
             {
+                Thread.Sleep(threadDelay);
                 Thread.Sleep(50);
                 UIntPtr newMoneyAddress = memlib.getCode("BTD5-Win.exe+008844B0,0xC4,0x90");
                 UIntPtr newHealthAddress = memlib.getCode("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88");

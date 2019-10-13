@@ -10,6 +10,7 @@ namespace NKHook5.Events
 {
     public class NkEvent
     {
+        public static int threadDelay = 10;
         public static NkEvent nkEvent;
         public static Mem memlib = Program.memlib;
         public void startAsync()
@@ -21,7 +22,6 @@ namespace NKHook5.Events
         }
         public virtual void work(object sender, DoWorkEventArgs e)
         {
-
         }
     }
 }

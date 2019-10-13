@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NKHook5.Events
@@ -18,6 +19,7 @@ namespace NKHook5.Events
             //Event work
             while (true)
             {
+                Thread.Sleep(threadDelay);
                 int newHealth = memlib.readInt("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88");
                 if (newHealth < health)
                 {

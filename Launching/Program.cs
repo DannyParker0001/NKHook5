@@ -32,7 +32,8 @@ namespace NKHook5
         {
             Console.Title = "NKHook5-Console";
             Console.WriteLine("NKHook5 (Unstable 4) Loading...");
-            Console.WriteLine("Thanks to NewAgeSoftware for providing tools for memory hacking.");
+            Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
+            Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
             GameLauncher.launchProperly();
             Console.ReadLine();
@@ -48,9 +49,6 @@ namespace NKHook5
             new TowerShop();
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");
             Console.WriteLine("Game hooked & Events registered!");
-            Console.WriteLine("Starting memory scanners...");
-            MemScanner.startScanners(memlib);
-            Console.WriteLine("Started memory scanners!");
             Console.WriteLine("Loading plugins...");
             PluginLoader.loadPlugins();
         }

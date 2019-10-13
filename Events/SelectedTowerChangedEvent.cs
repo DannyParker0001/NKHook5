@@ -19,7 +19,7 @@ namespace NKHook5.Events
             //Event work
             while (true)
             {
-                Thread.Sleep(50);
+                Thread.Sleep(threadDelay);
                 Tower selected = Game.getBTD5().getSelectedTower();
                 if (selected != null)
                 {

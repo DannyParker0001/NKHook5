@@ -38,25 +38,25 @@ namespace NKHook5
          */
         public List<Tower> getTowers()
         {
-            List<Tower> returntowers = new List<Tower>();
-            foreach(int towerId in MemScanner.allTowers)
+            List<Tower> allTowers = new List<Tower>();
+            int amount = memlib.readInt("BTD5-Win.exe+008844B0,D8,5AC");
+            //Logger.Log(int.Parse(memlib.getCode("BTD5-Win.exe+008844B0,78,3C,0,0").ToString()).ToString("X"));
+            for (int i = 0; i < (amount * 0x4); i += 0x4)
             {
-                Tower tower = new Tower(towerId);
-                returntowers.Add(tower);
+                allTowers.Add(new Tower(int.Parse(memlib.getCode("BTD5-Win.exe+008844B0,78,3C," + i.ToString("X") + ",0").ToString())));
             }
-            return returntowers;
+            return allTowers;
         }
 
         public Tower getSelectedTower()
         {
             try
             {
-                foreach (int tower in MemScanner.allTowers)
+                foreach (Tower tower in getTowers())
                 {
-                    Tower towerObj = new Tower(tower);
-                    if (towerObj.isSelected())
+                    if (tower.isSelected())
                     {
-                        return towerObj;
+                        return tower;
                     }
                 }
             }

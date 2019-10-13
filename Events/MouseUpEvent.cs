@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NKHook5.Events
@@ -18,6 +19,7 @@ namespace NKHook5.Events
             int clickCount = 0;
             while (true)
             {
+                Thread.Sleep(threadDelay);
                 int newCount = memlib.readInt("BTD5-Win.exe+88436C");
                 if(clickCount < newCount)
                 {

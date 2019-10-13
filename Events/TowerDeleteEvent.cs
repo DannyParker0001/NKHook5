@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace NKHook5.Events
@@ -18,12 +19,12 @@ namespace NKHook5.Events
             //Event work
             while (true)
             {
+                Thread.Sleep(threadDelay);
                 int newCount = memlib.readInt("BTD5-Win.exe+008844B0,D8,5AC");
                 if (newCount < towerCount)
                 {
                     try
                     {
-                        MemScanner.scanTowers();
                         Event.Invoke(this, new EventArgs());
                     } catch (Exception) { }
                 }
