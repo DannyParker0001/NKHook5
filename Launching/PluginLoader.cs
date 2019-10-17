@@ -33,19 +33,30 @@ namespace NKHook5
                     BackgroundWorker pluginLoadWorker = new BackgroundWorker();
                     pluginLoadWorker.DoWork += (object obj, DoWorkEventArgs dw) =>
                     {
-                        Logger.Log("Attempting to load " + file.Name);
-                        Assembly pluginAsm = Assembly.LoadFrom(file.FullName);
-                        Type pluginType = typeof(NkPlugin);
-                        foreach(Type t in pluginAsm.GetTypes())
+                        try
                         {
-                            Logger.Log("Found class " + t.Name);
-                            if(pluginType.IsAssignableFrom(t))
+                            Logger.Log("Attempting to load " + file.Name);
+                            Assembly pluginAsm = Assembly.LoadFrom(file.FullName);
+                            Type pluginType = typeof(NkPlugin);
+                            foreach (Type t in pluginAsm.GetTypes())
                             {
-                                Logger.Log("Found " + t.Name + " to be assignable");
-                                NkPlugin plugin = (NkPlugin)Activator.CreateInstance(t);
-                                plugin.NkLoad();
-                                Logger.Log("Loaded " + t.Name + " via NkPlugin load function");
+                                Logger.Log("Found class " + t.Name);
+                                if (pluginType.IsAssignableFrom(t))
+                                {
+                                    Logger.Log("Found " + t.Name + " to be assignable");
+                                    NkPlugin plugin = (NkPlugin)Activator.CreateInstance(t);
+                                    plugin.NkLoad();
+                                    Logger.Log("Loaded " + t.Name + " via NkPlugin load function");
+                                }
                             }
+                        }
+                        catch(Exception ex)
+                        {
+                            Logger.Log("Exception while loading plugin!");
+                            Logger.Log("-------------------------------");
+                            Logger.Log("Message: " + ex.Message);
+                            Logger.Log("Stacktrace:\n" + ex.StackTrace);
+                            Logger.Log("-------------------------------");
                         }
                     };
                     pluginLoadWorker.RunWorkerAsync();
