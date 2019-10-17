@@ -39,16 +39,16 @@ namespace NKHook5
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
+            AppDomain.CurrentDomain.ProcessExit += new EventHandler((object sender, EventArgs e) =>
+            {
+                Game.getBTD5().killGame();
+            });
             GameLauncher.launchProperly();
             Console.ReadLine();
         }
         public static void afterGameLoad(Process proc)
         {
             new Game(proc);
-            AppDomain.CurrentDomain.ProcessExit += (object sender, EventArgs e) =>
-            {
-                proc.Kill();
-            };
             GameEvents.startHandler(memlib);
             new TowerShop();
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");

@@ -90,8 +90,6 @@
     <Compile Include="API\Events\TowerPlaceEvent.cs" />
     <Compile Include="Launching\GameLauncher.cs" />
     <Compile Include="API\Logger.cs" />
-    <Compile Include="LowInterface\Register.cs" />
-    <Compile Include="LowInterface\UpgradeLowInterface.cs" />
     <Compile Include="Memory\FreSus.cs" />
     <Compile Include="Memory\MemAPI.cs" />
     <Compile Include="Memory\MemoryRegionResult.cs" />
@@ -111,9 +109,7 @@
     <None Include="App.config" />
     <None Include="app.manifest" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Experimental\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="NKHookGDI\NKGDI.resx">
       <DependentUpon>NKGDI.cs</DependentUpon>
