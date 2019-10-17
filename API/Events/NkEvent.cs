@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
     public class NkEvent
     {

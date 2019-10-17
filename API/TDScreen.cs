@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace NKHook5.API
 {
-    public interface NkPlugin
+    public enum TDScreen
     {
-        void NkLoad();
     }
 }

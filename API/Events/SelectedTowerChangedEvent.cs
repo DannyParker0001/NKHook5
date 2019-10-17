@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
     public class SelectedTowerChangedEvent : NkEvent
     {
@@ -39,7 +39,7 @@ namespace NKHook5.Events
                     {
                         Event.Invoke(null, new EventArgs());
                     }
-                    catch (NullReferenceException) { }
+                    catch (NullReferenceException) { /*Logger.Log("Message: "+ex.Message+"\nStacktrace: "+ex.StackTrace);*/ }
                     //Logger.Log("Tower changed invoked here: " + selected.getMemId());
                 }
                 previousTower = selected;

@@ -238,7 +238,7 @@ namespace Memory
         /// </summary>
         public IntPtr pHandle;
         Dictionary<string, CancellationTokenSource> FreezeTokenSrcs = new Dictionary<string, CancellationTokenSource>();
-        public Process theProc = null;
+        public System.Diagnostics.Process theProc = null;
 
         internal enum MINIDUMP_TYPE
         {
@@ -351,7 +351,7 @@ namespace Memory
                     return false;
                 }
 
-                theProc = Process.GetProcessById(pid);
+                theProc = System.Diagnostics.Process.GetProcessById(pid);
 
                 if (theProc != null && !theProc.Responding)
                 {
@@ -360,7 +360,7 @@ namespace Memory
                 }
 
                 pHandle = OpenProcess(0x1F0FFF, true, pid);
-                Process.EnterDebugMode();
+                System.Diagnostics.Process.EnterDebugMode();
 
                 if (pHandle == IntPtr.Zero)
                 {
@@ -457,12 +457,12 @@ namespace Memory
         /// <returns></returns>
         public int getProcIDFromName(string name) //new 1.0.2 function
         {
-            Process[] processlist = Process.GetProcesses();
+            System.Diagnostics.Process[] processlist = System.Diagnostics.Process.GetProcesses();
 
             if (name.Contains(".exe"))
                 name = name.Replace(".exe", "");
 
-            foreach (Process theprocess in processlist)
+            foreach (System.Diagnostics.Process theprocess in processlist)
             {
                 if (theprocess.ProcessName.Equals(name, StringComparison.CurrentCultureIgnoreCase)) //find (name).exe in the process list (use task manager to find the name)
                     return theprocess.Id;
@@ -1630,7 +1630,7 @@ namespace Memory
 
         public static void SuspendProcess(int pid)
         {
-            var process = Process.GetProcessById(pid);
+            var process = System.Diagnostics.Process.GetProcessById(pid);
 
             if (process.ProcessName == string.Empty)
                 return;
@@ -1648,7 +1648,7 @@ namespace Memory
 
         public static void ResumeProcess(int pid)
         {
-            var process = Process.GetProcessById(pid);
+            var process = System.Diagnostics.Process.GetProcessById(pid);
             if (process.ProcessName == string.Empty)
                 return;
 

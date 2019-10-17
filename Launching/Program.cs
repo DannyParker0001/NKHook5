@@ -1,4 +1,7 @@
 ﻿using Memory;
+using NKHook5.API;
+using NKHook5.API.Events;
+using NKHook5.NKHookGDI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
+
 
 namespace NKHook5
 {
@@ -31,7 +35,7 @@ namespace NKHook5
         private static void NKHook5()
         {
             Console.Title = "NKHook5-Console";
-            Console.WriteLine("NKHook5 (Unstable 4) Loading...");
+            Console.WriteLine("NKHook5 (Unstable 6) Loading...");
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
@@ -51,6 +55,14 @@ namespace NKHook5
             Console.WriteLine("Game hooked & Events registered!");
             Console.WriteLine("Loading plugins...");
             PluginLoader.loadPlugins();
+            List<long> res = memlib.AoBScan("68 74 74 70 73 3A 2F 2F 6E 65 77 67 61 6D 2E 65 73 2F 62 74 64 35 62 74 64 36", true, true).Result.ToList();
+            foreach (long addr in res)
+            {
+                memlib.writeMemory(addr.ToString("X"), "string", "https://discord.gg/VADMF2M");
+            }
+            NKGDI gdi = new NKGDI(memlib);
+            System.Windows.Forms.Application.EnableVisualStyles();
+            System.Windows.Forms.Application.Run(gdi);
         }
     }
 }

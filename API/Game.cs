@@ -1,5 +1,5 @@
 ﻿using Memory;
-using NKHook5.Events;
+using NKHook5.API.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NKHook5
+namespace NKHook5.API
 {
     public class Game
     {
@@ -16,18 +16,18 @@ namespace NKHook5
         static extern int SetWindowText(IntPtr hWnd, string text);
 
         static Game instance = null;
-        internal static Process gameProc = null;
+        internal static System.Diagnostics.Process gameProc = null;
         static Mem memlib = Program.memlib;
 
         public static Game getBTD5()
         {
             return instance;
         }
-        public static Process getProcess()
+        public static System.Diagnostics.Process getProcess()
         {
             return gameProc;
         }
-        internal Game(Process gameProc)
+        internal Game(System.Diagnostics.Process gameProc)
         {
             Game.gameProc = gameProc;
             instance = this;
@@ -47,7 +47,6 @@ namespace NKHook5
             }
             return allTowers;
         }
-
         public Tower getSelectedTower()
         {
             try
@@ -70,6 +69,10 @@ namespace NKHook5
         public int getMonkeyMoney()
         {
             return memlib.readInt("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x118");
+        }
+        public int getTokens()
+        {
+            return memlib.readInt("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x120");
         }
         public int getHealth()
         {
@@ -94,6 +97,10 @@ namespace NKHook5
         public int getScreenMouseY()
         {
             return memlib.readInt("gameoverlayrenderer.dll+1256BC");
+        }
+        public int getDoublePathCutoff()
+        {
+            return memlib.readByte("BTD5-Win.exe+3C8DC9");
         }
 
         /*
@@ -127,6 +134,10 @@ namespace NKHook5
         public void setRound(int round)
         {
             memlib.writeMemory("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14", "int", round.ToString());
+        }
+        public void setDoublePathCutoff(int maxCutoff)
+        {
+            memlib.writeMemory("BTD5-Win.exe+3C8DC9", "byte", maxCutoff.ToString());
         }
 
         /*

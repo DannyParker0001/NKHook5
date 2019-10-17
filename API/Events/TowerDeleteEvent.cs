@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
     public class TowerDeleteEvent : NkEvent
     {

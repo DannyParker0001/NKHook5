@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NKHook5
+namespace NKHook5.API
 {
     public static class Logger
     {

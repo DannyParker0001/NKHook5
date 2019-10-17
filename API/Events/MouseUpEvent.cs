@@ -6,29 +6,30 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
-    public class TowerPlaceEvent : NkEvent
+    public class MouseUpEvent : NkEvent
     {
         public static event EventHandler<EventArgs> Event;
         public override void work(object sender, DoWorkEventArgs e)
         {
             base.work(sender, e);
 
-            int towerCount = 0;
             //Event work
+            int clickCount = 0;
             while (true)
             {
                 Thread.Sleep(threadDelay);
-                int newCount = memlib.readInt("BTD5-Win.exe+008844B0,D8,5AC");
-                if (newCount > towerCount)
+                int newCount = memlib.readInt("BTD5-Win.exe+88436C");
+                if(clickCount < newCount)
                 {
                     try
                     {
                         Event.Invoke(this, new EventArgs());
-                    } catch (Exception) { }
+                    }
+                    catch (NullReferenceException) { }
                 }
-                towerCount = newCount;
+                clickCount = newCount;
             }
         }
     }

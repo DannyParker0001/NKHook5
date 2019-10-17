@@ -1,4 +1,4 @@
-﻿using NKHook5.Events.Args;
+﻿using NKHook5.API.Events.Args;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
     public class MouseMoveEvent : NkEvent
     {

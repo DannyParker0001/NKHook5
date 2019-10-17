@@ -6,22 +6,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
-    public class ScreenCloseEvent : NkEvent
+    public class HealthIncreaseEvent : NkEvent
     {
         public static event EventHandler<EventArgs> Event;
         public override void work(object sender, DoWorkEventArgs e)
         {
             base.work(sender, e);
 
+            int health = 150;
             //Event work
-            int status = 0;
             while (true)
             {
                 Thread.Sleep(threadDelay);
-                int newStatus = memlib.readByte("BTD5-Win.exe+884290");
-                if (newStatus > status)
+                int newHealth = memlib.readInt("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88");
+                if (newHealth > health)
                 {
                     try
                     {
@@ -29,7 +29,7 @@ namespace NKHook5.Events
                     }
                     catch (NullReferenceException) { }
                 }
-                status = newStatus;
+                health = newHealth;
             }
         }
     }

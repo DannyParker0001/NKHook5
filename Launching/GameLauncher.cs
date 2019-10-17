@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NKHook5.API;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,7 +20,7 @@ namespace NKHook5
                 Thread.Sleep(1000);
                 while (true)
                 {
-                    Process[] procs = Process.GetProcessesByName("BTD5-Win");
+                    System.Diagnostics.Process[] procs = Process.GetProcessesByName("BTD5-Win");
                     if (procs.Length > 0)
                     {
                         Thread.Sleep(5000);
@@ -41,15 +42,15 @@ namespace NKHook5
                 Console.WriteLine("Waiting for game...");
                 while (true)
                 {
-                    Process[] procs = Process.GetProcessesByName("BTD5-Win");
+                    System.Diagnostics.Process[] procs = System.Diagnostics.Process.GetProcessesByName("BTD5-Win");
                     if (procs.Length > 0)
                     {
                         Thread.Sleep(5000);
                         Program.memlib.OpenProcess("BTD5-Win");
-                        Program.afterGameLoad(Process.GetProcessesByName("BTD5-Win")[0]);
+                        Program.afterGameLoad(System.Diagnostics.Process.GetProcessesByName("BTD5-Win")[0]);
                         break;
                     }
-                    Process.Start("steam://rungameid/306020");
+                    System.Diagnostics.Process.Start("steam://rungameid/306020");
                 }
                 Logger.Log("BTD5 cant be found running");
                 Console.WriteLine("Starting BTD5");

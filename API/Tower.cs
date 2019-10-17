@@ -1,4 +1,5 @@
 ﻿using Memory;
+using NKHook5.API;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NKHook5
+namespace NKHook5.API
 {
     public class Tower
     {
@@ -70,6 +71,21 @@ namespace NKHook5
                 int path2 = towerAddr + 0x13C;
                 return memlib.readInt(path2.ToString("X"));
             }
+        }
+        /*
+        * HUGE thanks to Argh#2682 for the help with mathematics in this method!
+        */
+        public TowerType getType()
+        {
+            int type = towerAddr + 0xD0;
+            try
+            {
+                return (TowerType)Enum.Parse(typeof(TowerType), Math.Log(memlib.readLong(type.ToString("X")), 2).ToString());
+            }
+            catch (Exception)
+            {
+            }
+            return TowerType.ExceptionMonkey;
         }
 
         /*

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5
+namespace NKHook5.API
 {
     public class TowerShop
     {
@@ -17,42 +18,9 @@ namespace NKHook5
             return instance;
         }
 
-        //Tower prices
-        static int dartMonkeyAddress = 0;
-        static int tackShooterAddress = 0;
-        static int sniperMonkeyAddress = 0;
-        static int boomerangMonkeyAddress = 0;
-        static int ninjaMonkeyAddress = 0;
-        static int bombTowerAddress = 0;
-        static int iceTowerAddress = 0;
-        static int glueGunnerAddress = 0;
-        static int monkeySailorAddress = 0;
-        static int monkeyPilotAddress = 0;
-
         internal TowerShop()
         {
             TowerShop.instance = this;
-
-            //scan for tower prices
-
-            BackgroundWorker shopWorker = new BackgroundWorker();
-            shopWorker.DoWork += (object sender, DoWorkEventArgs args) =>
-            {
-                dartMonkeyAddress = (int)memlib.AoBScan("0xC8 0x00 0x00 0x00 0x01", true, true).Result.ToList()[0];
-                tackShooterAddress = (int)memlib.AoBScan("0x68 0x01 0x00 0x00 0x02", true, true).Result.ToList()[0];
-                sniperMonkeyAddress = (int)memlib.AoBScan("0x5E 0x01 0x00 0x00 0x03", true, true).Result.ToList()[0];
-                boomerangMonkeyAddress = (int)memlib.AoBScan("0x90 0x01 0x00 0x00 0x04", true, true).Result.ToList()[0];
-                ninjaMonkeyAddress = (int)memlib.AoBScan("0xF4 0x01 0x00 0x00 0x06", true, true).Result.ToList()[0];
-                bombTowerAddress = (int)memlib.AoBScan("0x8A 0x02 0x00 0x00 0x07", true, true).Result.ToList()[0];
-                iceTowerAddress = (int)memlib.AoBScan("0x2C 0x01 0x00 0x00 0x08", true, true).Result.ToList()[0];
-                glueGunnerAddress = (int)memlib.AoBScan("0x0E 0x01 0x00 0x00 0x09", true, true).Result.ToList()[0];
-                monkeySailorAddress = (int)memlib.AoBScan("0x0D 0x02 0x00 0x00 0x0B", true, true).Result.ToList()[0];
-                monkeyPilotAddress = (int)memlib.AoBScan("0x9D 0x03 0x00 0x00 0x0C", true, true).Result.ToList()[0];
-
-                //Sneaky ad here :P
-                memlib.writeMemory("BTD5-Win.exe+00884D78,0", "string", "https://discord.gg/VADMF2M");
-            };
-            shopWorker.RunWorkerAsync();
         }
 
         /*
@@ -60,43 +28,99 @@ namespace NKHook5
          */
         public int getDartMonkeyPrice()
         {
-            return memlib.readInt(dartMonkeyAddress.ToString("X"));
+            int offset = 196;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getTackShooterPrice()
         {
-            return memlib.readInt(tackShooterAddress.ToString("X"));
+            int offset = 201;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getSniperMonkeyPrice()
         {
-            return memlib.readInt(sniperMonkeyAddress.ToString("X"));
+            int offset = 176;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getBoomerangMonkeyPrice()
         {
-            return memlib.readInt(boomerangMonkeyAddress.ToString("X"));
+            int offset = 131;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getNinjaMonkeyPrice()
         {
-            return memlib.readInt(ninjaMonkeyAddress.ToString("X"));
+            int offset = 211;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
-        public int getBombTowerPrice()
-        {
-            return memlib.readInt(bombTowerAddress.ToString("X"));
-        }
+        /*
+         * Couldnt find bomb tower offset yet :(
+         */
         public int getIceTowerPrice()
         {
-            return memlib.readInt(iceTowerAddress.ToString("X"));
+            int offset = 236;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getGlueGunnerPrice()
         {
-            return memlib.readInt(glueGunnerAddress.ToString("X"));
+            int offset = 71;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getMonkeySailorPrice()
         {
-            return memlib.readInt(monkeySailorAddress.ToString("X"));
+            int offset = 111;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
         public int getMonkeyPilotPrice()
         {
-            return memlib.readInt(monkeyPilotAddress.ToString("X"));
+            int offset = 106;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getSuperMonkeyPrice()
+        {
+            int offset = 136;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getMonkeyApprenticePrice()
+        {
+            int offset = 61;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getMonkeyVillagePrice()
+        {
+            int offset = 151;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getBananaFarmPrice()
+        {
+            int offset = 121;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getMortarTowerPrice()
+        {
+            int offset = 156;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getDartlingGunPrice()
+        {
+            int offset = 151;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getSpikeFactoryPrice(int cost)
+        {
+            int offset = 246;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        /*
+         * Heli & engi here
+         */
+        public int getBloonChipperPrice()
+        {
+            int offset = 111;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
+        }
+        public int getMonkeySubPrice()
+        {
+            int offset = 191;
+            return memlib.readInt("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34");
         }
 
         /*
@@ -104,43 +128,99 @@ namespace NKHook5
          */
         public void setDartMonkeyPrice(int cost)
         {
-            memlib.writeMemory(dartMonkeyAddress.ToString("X"), "int", cost.ToString());
+            int offset = 196;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setTackShooterPrice(int cost)
         {
-            memlib.writeMemory(tackShooterAddress.ToString("X"), "int", cost.ToString());
+            int offset = 201;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setSniperMonkeyPrice(int cost)
         {
-            memlib.writeMemory(sniperMonkeyAddress.ToString("X"), "int", cost.ToString());
+            int offset = 176;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setBoomerangMonkeyPrice(int cost)
         {
-            memlib.writeMemory(boomerangMonkeyAddress.ToString("X"), "int", cost.ToString());
+            int offset = 131;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setNinjaMonkeyPrice(int cost)
         {
-            memlib.writeMemory(ninjaMonkeyAddress.ToString("X"), "int", cost.ToString());
+            int offset = 211;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
-        public void setBombTowerPrice(int cost)
-        {
-            memlib.writeMemory(bombTowerAddress.ToString("X"), "int", cost.ToString());
-        }
+        /*
+         * Bomb tower here
+         */
         public void setIceTowerPrice(int cost)
         {
-            memlib.writeMemory(iceTowerAddress.ToString("X"), "int", cost.ToString());
+            int offset = 236;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setGlueGunnerPrice(int cost)
         {
-            memlib.writeMemory(glueGunnerAddress.ToString("X"), "int", cost.ToString());
+            int offset = 71;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setMonkeySailorPrice(int cost)
         {
-            memlib.writeMemory(monkeySailorAddress.ToString("X"), "int", cost.ToString());
+            int offset = 111;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
         public void setMonkeyPilotPrice(int cost)
         {
-            memlib.writeMemory(monkeyPilotAddress.ToString("X"), "int", cost.ToString());
+            int offset = 106;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setSuperMonkeyPrice(int cost)
+        {
+            int offset = 136;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setMonkeyApprenticePrice(int cost)
+        {
+            int offset = 61;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setMonkeyVillagePrice(int cost)
+        {
+            int offset = 151;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setBananaFarmPrice(int cost)
+        {
+            int offset = 121;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setMortarTowerPrice(int cost)
+        {
+            int offset = 156;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setDartlingGunPrice(int cost)
+        {
+            int offset = 151;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setSpikeFactoryPrice(int cost)
+        {
+            int offset = 246;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        /*
+         * Heli & engi here
+         */
+        public void setBloonChipperPrice(int cost)
+        {
+            int offset = 111;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
+        }
+        public void setMonkeySubPrice(int cost)
+        {
+            int offset = 191;
+            memlib.writeMemory("BTD5-Win.exe+008844B0,9C,30,C," + offset.ToString("X") + ",4,20,34", "int", cost.ToString());
         }
     }
 }

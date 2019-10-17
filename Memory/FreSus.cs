@@ -36,7 +36,7 @@ namespace NKHook5
 
         internal static void SuspendProcess(int pid)
         {
-            var process = Process.GetProcessById(pid);
+            var process = System.Diagnostics.Process.GetProcessById(pid);
 
             if (process.ProcessName == string.Empty)
                 return;
@@ -58,7 +58,7 @@ namespace NKHook5
 
         internal static void ResumeProcess(int pid)
         {
-            var process = Process.GetProcessById(pid);
+            var process = System.Diagnostics.Process.GetProcessById(pid);
 
             if (process.ProcessName == string.Empty)
                 return;

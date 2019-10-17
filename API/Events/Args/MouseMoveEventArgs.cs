@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events.Args
+namespace NKHook5.API.Events.Args
 {
     public class MouseMoveEventArgs
     {

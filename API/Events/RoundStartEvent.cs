@@ -6,22 +6,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NKHook5.Events
+namespace NKHook5.API.Events
 {
-    public class ScreenChangedEvent : NkEvent
+    public class RoundStartEvent : NkEvent
     {
         public static event EventHandler<EventArgs> Event;
         public override void work(object sender, DoWorkEventArgs e)
         {
             base.work(sender, e);
 
+            int round = 0;
             //Event work
-            int status = 0;
             while (true)
             {
                 Thread.Sleep(threadDelay);
-                int newStatus = memlib.readByte("BTD5-Win.exe+884290");
-                if (newStatus != status)
+                int newRound = memlib.readInt("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14");
+                if (newRound > round)
                 {
                     try
                     {
@@ -29,7 +29,7 @@ namespace NKHook5.Events
                     }
                     catch (NullReferenceException) { }
                 }
-                status = newStatus;
+                round = newRound;
             }
         }
     }
