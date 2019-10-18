@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace NKHook5.File
 {
-    public class FileUnblocker
+    internal class FileUnblocker
     {
 
         [DllImport("kernel32", CharSet = CharSet.Unicode, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool DeleteFile(string name);
+        internal static extern bool DeleteFile(string name);
 
-        public static bool Unblock(string fileName)
+        internal static bool Unblock(string fileName)
         {
             return DeleteFile(fileName + ":Zone.Identifier");
         }
