@@ -1,4 +1,5 @@
 ﻿using NKHook5.API;
+using NKHook5.File;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,6 +36,8 @@ namespace NKHook5
                     {
                         try
                         {
+                            Logger.Log("Unblocking " + file.Name);
+                            FileUnblocker.Unblock(file.FullName);
                             Logger.Log("Attempting to load " + file.Name);
                             Assembly pluginAsm = Assembly.LoadFrom(file.FullName);
                             Type pluginType = typeof(NkPlugin);
