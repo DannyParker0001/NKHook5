@@ -82,6 +82,14 @@ namespace NKHook5.API
         {
             return memlib.readInt("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14");
         }
+        public int getRank()
+        {
+            return memlib.readInt("BTD5-Win.exe+008844B0,0xF0,0x0,0xC4,0x20");
+        }
+        public int getXP()
+        {
+            return memlib.readInt("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x28");
+        }
         public float getMouseX()
         {
             return memlib.readFloat("BTD5-Win.exe+00884438,0x10,0x20");
@@ -110,7 +118,7 @@ namespace NKHook5.API
         {
             SetWindowText(gameProc.MainWindowHandle, title);
         }
-        public void setMoney(int amount)
+        public void setMoney(double amount)
         {
             if(amount>getMoney())
             {
@@ -127,6 +135,10 @@ namespace NKHook5.API
         {
             memlib.writeMemory("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x118", "int", amount.ToString());
         }
+        public void setTokens(int amount)
+        {
+            memlib.writeMemory("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x120", "int", amount.ToString());
+        }
         public void setHealth(int amount)
         {
             memlib.writeMemory("BTD5-Win.exe+00884274,0x5C,0x8C,0x18,0xC8,0x88", "int", amount.ToString());
@@ -134,6 +146,14 @@ namespace NKHook5.API
         public void setRound(int round)
         {
             memlib.writeMemory("BTD5-Win.exe+008844B0,0xC0,0x250,0x8,0x80,0x14", "int", round.ToString());
+        }
+        public void setRank(int rank)
+        {
+            memlib.writeMemory("BTD5-Win.exe+008844B0,0xF0,0x0,0xC4,0x20", "int", rank.ToString());
+        }
+        public void setXP(double xp)
+        {
+            memlib.writeMemory("BTD5-Win.exe+008844B0,0xD4,0x18,0x0,0x58,0x28", "double", xp.ToString());
         }
         public void setDoublePathCutoff(int maxCutoff)
         {

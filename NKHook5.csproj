@@ -76,7 +76,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\AgentType.cs" />
     <Compile Include="API\Game.cs" />
     <Compile Include="API\GDI.cs" />
     <Compile Include="API\TDScreen.cs" />
