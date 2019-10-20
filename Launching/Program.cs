@@ -35,7 +35,7 @@ namespace NKHook5
         private static void NKHook5()
         {
             Console.Title = "NKHook5-Console";
-            Console.WriteLine("NKHook5 (Unstable 6) Loading...");
+            Console.WriteLine("NKHook5 (Unstable 7) Loading...");
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");

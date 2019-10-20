@@ -62,6 +62,24 @@ namespace NKHook5.API
             catch (InvalidOperationException) { }
             return null;
         }
+        public List<Bloon> getBloons()
+        {
+            List<Bloon> bloons = new List<Bloon>();
+            int offset = 0;
+            while (true)
+            {
+                int recurBloon = int.Parse(memlib.getCode("BTD5-Win.exe+00884280,0,74,4," + offset.ToString("X") + ",0").ToString());
+                Bloon recur = new Bloon(recurBloon);
+                if (recur.getProgress() > 0)
+                {
+                    bloons.Add(recur);
+                }
+                else
+                {
+                    return bloons;
+                }
+            }
+        }
         public double getMoney()
         {
             return memlib.readDouble("BTD5-Win.exe+008844B0,0xC4,0x90");
@@ -109,6 +127,10 @@ namespace NKHook5.API
         public int getDoublePathCutoff()
         {
             return memlib.readByte("BTD5-Win.exe+3C8DC9");
+        }
+        public float getTickSpeed()
+        {
+            return memlib.readFloat("BTD5-Win.exe+008844B0,C4,90");
         }
 
         /*
@@ -158,6 +180,10 @@ namespace NKHook5.API
         public void setDoublePathCutoff(int maxCutoff)
         {
             memlib.writeMemory("BTD5-Win.exe+3C8DC9", "byte", maxCutoff.ToString());
+        }
+        public void setTickSpeed(float speed)
+        {
+            memlib.writeMemory("BTD5-Win.exe+008844B0,C4,90", "float", speed.ToString());
         }
 
         /*

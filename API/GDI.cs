@@ -22,11 +22,5 @@ namespace NKHook5.API
         {
             return instance;
         }
-
-        public void addFormLayer(ControlCollection toAdd)
-        {
-            Delegate del = new addFormLayerPassthrough(NKGDI.instance.addFormLayer);
-            NKGDI.instance.Invoke(del, toAdd);
-        }
     }
 }

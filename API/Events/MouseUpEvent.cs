@@ -20,7 +20,7 @@ namespace NKHook5.API.Events
             while (true)
             {
                 Thread.Sleep(threadDelay);
-                int newCount = memlib.readInt("BTD5-Win.exe+88436C");
+                int newCount = memlib.readInt("0149436C");
                 if(clickCount < newCount)
                 {
                     try
