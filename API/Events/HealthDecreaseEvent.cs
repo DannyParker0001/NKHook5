@@ -27,7 +27,7 @@ namespace NKHook5.API.Events
                     {
                         Event.Invoke(this, new EventArgs());
                     }
-                    catch (NullReferenceException) { }
+                    catch (Exception) { }
                 }
                 health = newHealth;
             }

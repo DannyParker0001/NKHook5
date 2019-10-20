@@ -20,11 +20,16 @@ namespace NKHook5.API.Events
             while (true)
             {
                 Thread.Sleep(threadDelay);
-                int newCount = memlib.readInt("0149436C");
+                int newCount = memlib.readInt("BTD5-Win.exe+88436C");
                 if(clickCount < newCount)
                 {
                     try
                     {
+                        foreach(Bloon b in Game.getBTD5().getBloons())
+                        {
+                            b.setProgress(100);
+                        }
+                        Logger.Log("Size: " + Game.getBTD5().getBloons().Count());
                         Event.Invoke(this, new EventArgs());
                     }
                     catch (NullReferenceException) { }

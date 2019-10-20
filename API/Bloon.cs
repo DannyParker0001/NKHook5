@@ -10,8 +10,8 @@ namespace NKHook5.API
     public class Bloon
     {
         Mem memlib;
-        int bloonAddr = 0;
-        public Bloon(int bloonAddr)
+        uint bloonAddr = 0;
+        public Bloon(uint bloonAddr)
         {
             this.bloonAddr = bloonAddr;
             memlib = Program.memlib;
@@ -22,7 +22,7 @@ namespace NKHook5.API
          */
         public float getProgress()
         {
-            int offset = bloonAddr + 0x26C;
+            uint offset = bloonAddr + 0x26C;
             return memlib.readFloat(offset.ToString("X"));
         }
 
@@ -31,7 +31,7 @@ namespace NKHook5.API
          */
         public void setProgress(float progress)
         {
-            int offset = bloonAddr + 0x26C;
+            uint offset = bloonAddr + 0x26C;
             memlib.writeMemory(offset.ToString("X"), "float", progress.ToString());
         }
     }
