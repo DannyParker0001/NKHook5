@@ -68,21 +68,19 @@ namespace NKHook5.API
         public List<Bloon> getBloons()
         {
             List<Bloon> bloons = new List<Bloon>();
-            int lastBloon = memlib.readInt("BTD5-Win.exe+00884280,0,74,8,0");
-            int offset = 0;
-            int count = 0;
-            while (true)
+            for(int i = 0; i < (getBloonCount()*4); i++)
             {
-                uint recurBloon = memlib.getCode("BTD5-Win.exe+00884280,0,74,4," + offset.ToString("X") + ",0").ToUInt32();
-                if (recurBloon == lastBloon)
-                {
-                    break;
-                }
-                bloons.Add(new Bloon(recurBloon));
-                offset += 0x4;
-                count++;
+                bloons.Add(new Bloon(memlib.getCode("BTD5-Win.exe+00884280,0,74,4," + i.ToString("X") + ",0").ToUInt32()));
             }
             return bloons;
+        }
+        public uint getBloonCount()
+        {
+            uint lastBloon = memlib.getCode("BTD5-Win.exe+00884280,0,74,8,0").ToUInt32();
+            Logger.Log(lastBloon.ToString());
+            uint firstBloon = memlib.getCode("BTD5-Win.exe+00884280,0,74,4,0").ToUInt32();
+            Logger.Log(firstBloon.ToString());
+            return (lastBloon - firstBloon) / 4;
         }
         public double getMoney()
         {
