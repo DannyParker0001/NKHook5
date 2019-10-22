@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NKHook5.File
+namespace NKHook5.FileFix
 {
     internal class FileUnblocker
     {

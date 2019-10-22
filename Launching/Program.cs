@@ -1,11 +1,14 @@
-﻿using Memory;
+﻿using DiscordRPC;
+using Memory;
 using NKHook5.API;
 using NKHook5.API.Events;
 using NKHook5.NKHookGDI;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -27,6 +30,7 @@ namespace NKHook5
     {
 
         public static Mem memlib = new Mem();
+        internal static DiscordRpcClient client = new DiscordRpcClient("636315850630234139");
 
         static void Main(string[] args)
         {
@@ -36,6 +40,12 @@ namespace NKHook5
         {
             Console.Title = "NKHook5-Console";
             Console.WriteLine("NKHook5 (Unstable 7) Loading...");
+            if(!new FileInfo(Environment.CurrentDirectory+ "\\Newtonsoft.Json.dll").Exists)
+            {
+                WebClient client = new WebClient();
+                client.DownloadFile("LINK TBD", Environment.CurrentDirectory + "\\Newtonsoft.Json.dll");
+            }
+            client.UpdateDetails("NKHook is loading...");
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
@@ -63,6 +73,7 @@ namespace NKHook5
             NKGDI gdi = new NKGDI(memlib);
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.Run(gdi);
+            client.UpdateDetails("NKHook was just hooked to BTD5");
         }
     }
 }

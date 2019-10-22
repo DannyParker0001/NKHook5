@@ -22,5 +22,10 @@ namespace NKHook5.API
         {
             return instance;
         }
+
+        public static void notify(string text)
+        {
+
+        }
     }
 }

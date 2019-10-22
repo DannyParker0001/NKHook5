@@ -1,11 +1,13 @@
 ﻿using Memory;
 using NKHook5.API;
+using NKHook5.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -37,6 +39,8 @@ namespace NKHook5.NKHookGDI
         public static extern int SetWindowLong(IntPtr hWnd, GWL nIndex, int dwNewLong);
         [DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
         public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, int crKey, byte alpha, LWA dwFlags);
+        [DllImport("user32.dll", EntryPoint = "GetActiveWindow")]
+        public static extern IntPtr GetActiveWindow();
 
 
         internal static NKGDI instance = null;
@@ -49,8 +53,29 @@ namespace NKHook5.NKHookGDI
             instance = this;
         }
 
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
+        private PrivateFontCollection fonts = new PrivateFontCollection();
+        Font gameFont;
+
         private void NKGDI_Load(object sender, EventArgs e)
         {
+            /*
+             * Get game font
+             */
+            byte[] fontData = Properties.Resources.Oetztype;
+            IntPtr fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
+            Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            uint dummy = 0;
+            fonts.AddMemoryFont(fontPtr, Properties.Resources.Oetztype.Length);
+            AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.Oetztype.Length, IntPtr.Zero, ref dummy);
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+            gameFont = new Font(fonts.Families[0], 24.0F);
+
+            gdiTag.Font = gameFont;
+            gdiTag.BackColor = Color.Transparent;
+
+            //Other shit
             int wl = GetWindowLong(this.Handle, GWL.ExStyle);
             wl = wl | 0x80000 | 0x20;
             SetWindowLong(this.Handle, GWL.ExStyle, wl);
@@ -75,8 +100,40 @@ namespace NKHook5.NKHookGDI
 
             //Create an API instance!
             new GDI();
+
+            notify("test");
         }
 
+        internal void notify(string text)
+        {
+            System.Windows.Forms.Timer notifier = new System.Windows.Forms.Timer();
+            int tickCount = 0;
+            notifier.Tick += (object sen, EventArgs arg) =>
+            {
+                if (tickCount < 50)
+                {
+                    notifBox.Show();
+                    notifText.Parent = notifBox;
+                    notifText.Text = text;
+                    notifText.Font = gameFont;
+                    notifText.Location = notifBox.Location;
+                    notifText.Size = notifBox.Size;
+                    notifText.BringToFront();
+                    notifText.Show();
+                    tickCount++;
+                }
+                else
+                {
+                    notifText.Hide();
+                    notifBox.Hide();
+                    notifier.Stop();
+                    notifier.Dispose();
+                }
+                
+            };
+            notifier.Start();
+        }
+        /*
         internal void addFormLayer(System.Windows.Forms.Control.ControlCollection controls)
         {
             foreach(Control con in controls)
@@ -87,5 +144,6 @@ namespace NKHook5.NKHookGDI
                 this.Controls.Add(con);
             }
         }
+        */
     }
 }

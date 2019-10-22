@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             this.gdiTag = new System.Windows.Forms.Label();
+            this.notifText = new System.Windows.Forms.Label();
+            this.notifBox = new System.Windows.Forms.Panel();
+            this.notifBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // gdiTag
@@ -43,18 +46,46 @@
             this.gdiTag.TabIndex = 0;
             this.gdiTag.Text = "NKHook GDI Loaded";
             // 
+            // notifText
+            // 
+            this.notifText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.notifText.AutoSize = true;
+            this.notifText.BackColor = System.Drawing.Color.Transparent;
+            this.notifText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.notifText.Location = new System.Drawing.Point(21, 17);
+            this.notifText.Name = "notifText";
+            this.notifText.Size = new System.Drawing.Size(35, 13);
+            this.notifText.TabIndex = 2;
+            this.notifText.Text = "label1";
+            // 
+            // notifBox
+            // 
+            this.notifBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.notifBox.BackgroundImage = global::NKHook5.Properties.Resources.nk_hook_gdi_bg_1;
+            this.notifBox.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.notifBox.Controls.Add(this.notifText);
+            this.notifBox.Location = new System.Drawing.Point(1486, 12);
+            this.notifBox.Name = "notifBox";
+            this.notifBox.Size = new System.Drawing.Size(422, 179);
+            this.notifBox.TabIndex = 3;
+            // 
             // NKGDI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Fuchsia;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(1920, 1080);
+            this.Controls.Add(this.notifBox);
             this.Controls.Add(this.gdiTag);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "NKGDI";
             this.Text = "NKGDI";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.Load += new System.EventHandler(this.NKGDI_Load);
+            this.notifBox.ResumeLayout(false);
+            this.notifBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -62,5 +93,7 @@
 
         #endregion
         private System.Windows.Forms.Label gdiTag;
+        private System.Windows.Forms.Label notifText;
+        private System.Windows.Forms.Panel notifBox;
     }
 }

@@ -25,10 +25,6 @@ namespace NKHook5.API.Events
                 {
                     try
                     {
-                        foreach(Bloon b in Game.getBTD5().getBloons())
-                        {
-                            Logger.Log("ID: " + b.getID());
-                        }
                         Event.Invoke(this, new EventArgs());
                     }
                     catch (NullReferenceException) { }

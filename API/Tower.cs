@@ -87,6 +87,29 @@ namespace NKHook5.API
             }
             return TowerType.ExceptionMonkey;
         }
+        public double getTarget()
+        {
+            int type = towerAddr + 0x180;
+            Logger.Log("Target: " + Math.Log(memlib.readInt(type.ToString("X")), 2));
+            try
+            {
+                /*
+                return (TowerTarget)Enum.Parse(typeof(TowerTarget), Math.Log(memlib.readLong(type.ToString("X")), 2).ToString());*/
+                Logger.Log("Target: " + Math.Log(memlib.readInt(type.ToString("X")), 2));
+                return Math.Log(memlib.readInt(type.ToString("X")), 2);
+            }
+            catch (Exception)
+            {
+
+            }
+            //return TowerTarget.ExceptionTarget;
+            return 0;
+        }
+        public float getRotation()
+        {
+            int offset = towerAddr + 0x9C;
+            return memlib.readFloat(offset.ToString("X"));
+        }
 
         /*
          * Setters
@@ -169,6 +192,11 @@ namespace NKHook5.API
         {
             int colorB = towerAddr + 0x10A;
             memlib.writeMemory(colorB.ToString("X"), "int", B.ToString());
+        }
+        public void setRotation(float rotation)
+        {
+            int offset = towerAddr + 0x9C;
+            memlib.writeMemory(offset.ToString("X"), "float", rotation.ToString());
         }
 
 
