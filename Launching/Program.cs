@@ -1,7 +1,7 @@
-﻿using DiscordRPC;
-using Memory;
+﻿using Memory;
 using NKHook5.API;
 using NKHook5.API.Events;
+using NKHook5.Discord;
 using NKHook5.NKHookGDI;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -30,7 +31,6 @@ namespace NKHook5
     {
 
         public static Mem memlib = new Mem();
-        internal static DiscordRpcClient client = new DiscordRpcClient("636315850630234139");
 
         static void Main(string[] args)
         {
@@ -40,12 +40,29 @@ namespace NKHook5
         {
             Console.Title = "NKHook5-Console";
             Console.WriteLine("NKHook5 (Unstable 7) Loading...");
-            if(!new FileInfo(Environment.CurrentDirectory+ "\\Newtonsoft.Json.dll").Exists)
+            Console.WriteLine("Checking for missing dependancies...");
+            if (!new FileInfo(Environment.CurrentDirectory+ "\\Newtonsoft.Json.dll").Exists)
             {
+                Console.WriteLine("Missing Newtonsoft.Json, downloadng now...");
                 WebClient client = new WebClient();
-                client.DownloadFile("LINK TBD", Environment.CurrentDirectory + "\\Newtonsoft.Json.dll");
+                client.DownloadFile("https://github.com/DisabledMallis/NKHook5/raw/master/Submodules/Newtonsoft.Json.dll", Environment.CurrentDirectory + "\\Newtonsoft.Json.dll");
+                try
+                {
+                    Assembly.LoadFrom(Environment.CurrentDirectory + "\\Newtonsoft.Json.dll");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Failed to download Newtonsoft.Json!");
+                }
             }
-            client.UpdateDetails("NKHook is loading...");
+            if (!new FileInfo(Environment.CurrentDirectory + "\\DiscordRPC.dll").Exists)
+            {
+                Console.WriteLine("Missing DiscordRPC.dll, downloadng now...");
+                WebClient client = new WebClient();
+                client.DownloadFile("https://ci.appveyor.com/api/buildjobs/6drmg8lmctuw2ec5/artifacts/artifacts/DiscordRPC.dll", Environment.CurrentDirectory + "\\DiscordRPC.dll");
+                Assembly.LoadFrom(Environment.CurrentDirectory + "\\DiscordRPC.dll");
+            }
+            Console.WriteLine("Dependancies loaded!");
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
@@ -63,6 +80,7 @@ namespace NKHook5
             new TowerShop();
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");
             Console.WriteLine("Game hooked & Events registered!");
+            RichPresence.startRPC();
             Console.WriteLine("Loading plugins...");
             PluginLoader.loadPlugins();
             List<long> res = memlib.AoBScan("68 74 74 70 73 3A 2F 2F 6E 65 77 67 61 6D 2E 65 73 2F 62 74 64 35 62 74 64 36", true, true).Result.ToList();
@@ -73,7 +91,6 @@ namespace NKHook5
             NKGDI gdi = new NKGDI(memlib);
             System.Windows.Forms.Application.EnableVisualStyles();
             System.Windows.Forms.Application.Run(gdi);
-            client.UpdateDetails("NKHook was just hooked to BTD5");
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NKHook5.Discord;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -25,6 +26,7 @@ namespace NKHook5.API.Events
                 {
                     try
                     {
+                        RichPresence.update();
                         Event.Invoke(this, new EventArgs());
                     }
                     catch (NullReferenceException) { }
