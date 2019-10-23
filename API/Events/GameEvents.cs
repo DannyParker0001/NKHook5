@@ -48,6 +48,11 @@ namespace NKHook5.API.Events
             //Tower events
             new TowerPlaceEvent().startAsync();
             new TowerDeleteEvent().startAsync();
+
+            //Fast forward events
+            new FastForwardDisabledEvent().startAsync();
+            new FastForwardEnabledEvent().startAsync();
+            new FastForwardToggledEvent().startAsync();
         }
     }
 }

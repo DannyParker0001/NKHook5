@@ -36,6 +36,10 @@ namespace NKHook5.API
         /*
          * Getters here
          */
+        public bool isFastForwarding()
+        {
+            return memlib.readInt("BTD5-Win.exe+008844B0,AC,20,DC,4F4")>0;
+        }
         public List<Tower> getTowers()
         {
             List<Tower> allTowers = new List<Tower>();
