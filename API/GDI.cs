@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -12,7 +13,7 @@ namespace NKHook5.API
 {
     public class GDI
     {
-        internal delegate void addFormLayerPassthrough(ControlCollection toAdd);
+        internal delegate void notifyPassthrough(string text);
         internal static GDI instance = null;
         internal GDI()
         {
@@ -23,9 +24,10 @@ namespace NKHook5.API
             return instance;
         }
 
-        public static void notify(string text)
+        public void notify(string text)
         {
-
+            notifyPassthrough del = new notifyPassthrough(NKGDI.instance.notify);
+            NKGDI.instance.Invoke(del, text);
         }
     }
 }

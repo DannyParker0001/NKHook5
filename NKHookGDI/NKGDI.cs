@@ -70,7 +70,7 @@ namespace NKHook5.NKHookGDI
             fonts.AddMemoryFont(fontPtr, Properties.Resources.Oetztype.Length);
             AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.Oetztype.Length, IntPtr.Zero, ref dummy);
             System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
-            gameFont = new Font(fonts.Families[0], 24.0F);
+            gameFont = new Font(fonts.Families[0], 20.0F);
 
             gdiTag.Font = gameFont;
             gdiTag.BackColor = Color.Transparent;
@@ -101,7 +101,7 @@ namespace NKHook5.NKHookGDI
             //Create an API instance!
             new GDI();
 
-            notify("test");
+            notify("NKHook-GDI: overlay ready!");
         }
 
         internal void notify(string text)
@@ -114,10 +114,10 @@ namespace NKHook5.NKHookGDI
                 {
                     notifBox.Show();
                     notifText.Parent = notifBox;
-                    notifText.Text = text;
+                    scalePanel(notifBox, text);
+                    notifText.Text = spacify(text, (notifBox.Width/21));
                     notifText.Font = gameFont;
-                    notifText.Location = notifBox.Location;
-                    notifText.Size = notifBox.Size;
+                    notifText.TextAlign = ContentAlignment.MiddleCenter;
                     notifText.BringToFront();
                     notifText.Show();
                     tickCount++;
@@ -133,17 +133,79 @@ namespace NKHook5.NKHookGDI
             };
             notifier.Start();
         }
-        /*
-        internal void addFormLayer(System.Windows.Forms.Control.ControlCollection controls)
+
+        public void scalePanel(Panel scalable, string toFit)
         {
-            foreach(Control con in controls)
+            int len = toFit.Length;
+            int rightSide = scalable.Location.X + scalable.Width;
+            double calc = (len * len) - (len * (len/2));
+            if (calc < 420)
             {
-                con.Parent = this;
-                addFormLayer(con.Controls);
-                con.Visible = true;
-                this.Controls.Add(con);
+                scalable.Width = 420;
             }
+            else
+            {
+                scalable.Width = (int)calc;
+            }
+            scalable.Location = new Point(scalable.Location.X - (rightSide-this.Width), scalable.Location.Y);
         }
-        */
+
+        public string spacify(string text, int limit)
+        {
+            string totalString = "";
+            List<String> words = text.Split(' ').ToList();
+            int currentLen = 0;
+            foreach(string word in words)
+            {
+                int newLen = word.Length + currentLen;
+                if (newLen > limit)
+                {
+                    totalString += Environment.NewLine+word;
+                    currentLen = word.Length;
+                }
+                else
+                {
+                    totalString += " " + word;
+                    currentLen = newLen;
+                }
+            }
+            return totalString;
+        }
+
+        //cant figure this shit out, so fuck it
+        public string hyphenize(string text, int limit)
+        {
+            string textReturn = "";
+            int limiter = 0;
+            foreach(char c in text)
+            {
+                if (limiter > limit)
+                {
+                    if(c==' ')
+                    {
+                        textReturn += Environment.NewLine;
+                    }
+                    else
+                    {
+                        textReturn += c;
+                        if (text[limiter+1]==' ')
+                        {
+                            textReturn += Environment.NewLine;
+                        }
+                        else
+                        {
+                            textReturn += "-" + Environment.NewLine;
+                        }
+                    }
+                    limiter = 0;
+                }
+                else
+                {
+                    textReturn += c;
+                }
+                limiter++;
+            }
+            return textReturn;
+        }
     }
 }

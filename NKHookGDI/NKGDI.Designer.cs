@@ -48,15 +48,18 @@
             // 
             // notifText
             // 
-            this.notifText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.notifText.AutoSize = true;
             this.notifText.BackColor = System.Drawing.Color.Transparent;
+            this.notifText.Dock = System.Windows.Forms.DockStyle.Fill;
             this.notifText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.notifText.Location = new System.Drawing.Point(21, 17);
+            this.notifText.Location = new System.Drawing.Point(0, 0);
+            this.notifText.MinimumSize = new System.Drawing.Size(420, 180);
             this.notifText.Name = "notifText";
-            this.notifText.Size = new System.Drawing.Size(35, 13);
+            this.notifText.Padding = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.notifText.Size = new System.Drawing.Size(420, 180);
             this.notifText.TabIndex = 2;
-            this.notifText.Text = "label1";
+            this.notifText.Text = "text";
+            this.notifText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // notifBox
             // 
