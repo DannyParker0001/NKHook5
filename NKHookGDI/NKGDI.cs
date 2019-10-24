@@ -11,7 +11,6 @@ using System.Drawing.Text;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -64,6 +63,34 @@ namespace NKHook5.NKHookGDI
             base.WndProc(ref m);
         }
 
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        private static extern bool SetForegroundWindow(IntPtr hWnd);
+
+
+        WinEventDelegate winChangeDel = null;
+        delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
+        [DllImport("user32.dll")]
+        static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess, uint idThread, uint dwFlags);
+        private const uint WINEVENT_OUTOFCONTEXT = 0;
+        private const uint EVENT_SYSTEM_FOREGROUND = 3;
+        public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        {
+            Logger.Log("Handle changed!");
+            IntPtr handle = GetForegroundWindow();
+            if(handle == this.Handle || handle == Game.gameProc.MainWindowHandle)
+            {
+                this.TopMost = true;
+            }
+            if(handle != client.Handle || handle != Game.gameProc.MainWindowHandle)
+            {
+                this.TopMost = false;
+            }
+        }
+
+
         MdiClient client = null;
         internal static NKGDI instance = null;
         Mem memlib;
@@ -77,6 +104,7 @@ namespace NKHook5.NKHookGDI
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
+
         private PrivateFontCollection fonts = new PrivateFontCollection();
         Font gameFont;
 
@@ -99,25 +127,6 @@ namespace NKHook5.NKHookGDI
             gdiTag.Font = gameFont;
             gdiTag.BackColor = Color.Transparent;
 
-            System.Windows.Forms.Timer sizeTimer = new System.Windows.Forms.Timer();
-            sizeTimer.Tick += (object sen, EventArgs arg) =>
-            {
-                this.Location = new Point(memlib.readInt("BTD5-Win.exe+80EC1C")+8, memlib.readInt("BTD5-Win.exe+80EC20")+31);
-                this.Size = new Size(memlib.readInt("BTD5-Win.exe+80EC14"), memlib.readInt("BTD5-Win.exe+80EC18"));
-            };
-            sizeTimer.Interval = 1;
-            sizeTimer.Start();
-
-            System.Windows.Forms.Timer remBrand = new System.Windows.Forms.Timer();
-            remBrand.Interval = 5000;
-            remBrand.Tick += (object sen, EventArgs arg) =>
-            {
-                this.gdiTag.Hide();
-                remBrand.Stop();
-                remBrand.Dispose();
-            };
-            remBrand.Start();
-
             //Start MDI
             client = new MdiClient();
             Controls.Add(client);
@@ -127,6 +136,31 @@ namespace NKHook5.NKHookGDI
 
             style &= ~WS_BORDER;
             exStyle &= ~WS_EX_CLIENTEDGE;
+
+            //Hook window change event
+            winChangeDel = new WinEventDelegate(WinEventProc);
+            IntPtr m_hhook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, IntPtr.Zero, winChangeDel, 0, 0, WINEVENT_OUTOFCONTEXT);
+
+            //Set the form size equal to the game
+            System.Windows.Forms.Timer sizeTimer = new System.Windows.Forms.Timer();
+            sizeTimer.Tick += (object sen, EventArgs arg) =>
+            {
+                this.Location = new Point(memlib.readInt("BTD5-Win.exe+80EC1C")+8, memlib.readInt("BTD5-Win.exe+80EC20")+31);
+                this.Size = new Size(memlib.readInt("BTD5-Win.exe+80EC14"), memlib.readInt("BTD5-Win.exe+80EC18"));
+            };
+            sizeTimer.Interval = 1;
+            sizeTimer.Start();
+
+            //Remove branding notif
+            System.Windows.Forms.Timer remBrand = new System.Windows.Forms.Timer();
+            remBrand.Interval = 5000;
+            remBrand.Tick += (object sen, EventArgs arg) =>
+            {
+                this.gdiTag.Hide();
+                remBrand.Stop();
+                remBrand.Dispose();
+            };
+            remBrand.Start();
 
             // Set the styles using Win32 calls
             SetWindowLong(client.Handle, GWL_STYLE, style);
@@ -141,6 +175,8 @@ namespace NKHook5.NKHookGDI
             new GDI();
 
             notify("NKHook-GDI: overlay ready!");
+            Focus();
+            TopMost = true;
         }
 
         internal void showForm(Form child)
