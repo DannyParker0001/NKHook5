@@ -19,30 +19,52 @@ namespace NKHook5.NKHookGDI
 {
     internal partial class NKGDI : Form
     {
-        public enum GWL
-        {
-            ExStyle = -20
-        }
-        public enum LWA
-        {
-            ColorKey = 0x1,
-            Alpha = 0x2
-        }
-        public enum WS_EX
-        {
-            Transparent = 0x20,
-            Layered = 0x80000
-        }
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
-        public static extern int GetWindowLong(IntPtr hWnd, GWL nIndex);
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
-        public static extern int SetWindowLong(IntPtr hWnd, GWL nIndex, int dwNewLong);
-        [DllImport("user32.dll", EntryPoint = "SetLayeredWindowAttributes")]
-        public static extern bool SetLayeredWindowAttributes(IntPtr hWnd, int crKey, byte alpha, LWA dwFlags);
-        [DllImport("user32.dll", EntryPoint = "GetActiveWindow")]
-        public static extern IntPtr GetActiveWindow();
+        private const int GWL_STYLE = -16;
+        private const int GWL_EXSTYLE = -20;
 
+        private const int WS_BORDER = 0x00800000;
+        private const int WS_EX_CLIENTEDGE = 0x00000200;
 
+        private const uint SWP_NOSIZE = 0x0001;
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_NOZORDER = 0x0004;
+        private const uint SWP_NOREDRAW = 0x0008;
+        private const uint SWP_NOACTIVATE = 0x0010;
+        private const uint SWP_FRAMECHANGED = 0x0020;
+        private const uint SWP_SHOWWINDOW = 0x0040;
+        private const uint SWP_HIDEWINDOW = 0x0080;
+        private const uint SWP_NOCOPYBITS = 0x0100;
+        private const uint SWP_NOOWNERZORDER = 0x0200;
+        private const uint SWP_NOSENDCHANGING = 0x0400;
+
+        // Win32 Functions
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int GetWindowLong(IntPtr hWnd, int Index);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        private static extern int SetWindowLong(IntPtr hWnd, int Index, int Value);
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+        private static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter,
+            int X, int Y, int cx, int cy, uint uFlags);
+        private const int SB_HORZ = 0;
+        private const int SB_VERT = 1;
+        private const int SB_CTL = 2;
+        private const int SB_BOTH = 3;
+        [DllImport("user32.dll")]
+        private static extern int ShowScrollBar(IntPtr hWnd, int wBar, int bShow);
+        private const int WM_NCCALCSIZE = 0x83;
+
+        protected override void WndProc(ref Message m)
+        {
+            if (client != null)
+            {
+                ShowScrollBar(client.Handle, SB_BOTH, 0 /*Hide the ScrollBars*/);
+            }
+            base.WndProc(ref m);
+        }
+
+        MdiClient client = null;
         internal static NKGDI instance = null;
         Mem memlib;
         public NKGDI(Mem memlib)
@@ -63,6 +85,8 @@ namespace NKHook5.NKHookGDI
             /*
              * Get game font
              */
+            TransparencyKey = Color.FromArgb(255, 171, 171, 171);
+            BackColor = TransparencyKey;
             byte[] fontData = Properties.Resources.Oetztype;
             IntPtr fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
             Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
@@ -75,10 +99,6 @@ namespace NKHook5.NKHookGDI
             gdiTag.Font = gameFont;
             gdiTag.BackColor = Color.Transparent;
 
-            //Other shit
-            int wl = GetWindowLong(this.Handle, GWL.ExStyle);
-            wl = wl | 0x80000 | 0x20;
-            SetWindowLong(this.Handle, GWL.ExStyle, wl);
             System.Windows.Forms.Timer sizeTimer = new System.Windows.Forms.Timer();
             sizeTimer.Tick += (object sen, EventArgs arg) =>
             {
@@ -98,10 +118,35 @@ namespace NKHook5.NKHookGDI
             };
             remBrand.Start();
 
+            //Start MDI
+            client = new MdiClient();
+            Controls.Add(client);
+            // Get styles using Win32 calls
+            int style = GetWindowLong(client.Handle, GWL_STYLE);
+            int exStyle = GetWindowLong(client.Handle, GWL_EXSTYLE);
+
+            style &= ~WS_BORDER;
+            exStyle &= ~WS_EX_CLIENTEDGE;
+
+            // Set the styles using Win32 calls
+            SetWindowLong(client.Handle, GWL_STYLE, style);
+            SetWindowLong(client.Handle, GWL_EXSTYLE, exStyle);
+
+            // Update the non-client area.
+            SetWindowPos(client.Handle, IntPtr.Zero, 0, 0, 0, 0,
+                SWP_NOACTIVATE | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER |
+                SWP_NOOWNERZORDER | SWP_FRAMECHANGED);
+
             //Create an API instance!
             new GDI();
 
             notify("NKHook-GDI: overlay ready!");
+        }
+
+        internal void showForm(Form child)
+        {
+            child.MdiParent = this;
+            child.Show();
         }
 
         internal void notify(string text)
@@ -133,7 +178,6 @@ namespace NKHook5.NKHookGDI
             };
             notifier.Start();
         }
-
         public void scalePanel(Panel scalable, string toFit)
         {
             int len = toFit.Length;
@@ -149,7 +193,6 @@ namespace NKHook5.NKHookGDI
             }
             scalable.Location = new Point(scalable.Location.X - (rightSide-this.Width), scalable.Location.Y);
         }
-
         public string spacify(string text, int limit)
         {
             string totalString = "";
@@ -170,42 +213,6 @@ namespace NKHook5.NKHookGDI
                 }
             }
             return totalString;
-        }
-
-        //cant figure this shit out, so fuck it
-        public string hyphenize(string text, int limit)
-        {
-            string textReturn = "";
-            int limiter = 0;
-            foreach(char c in text)
-            {
-                if (limiter > limit)
-                {
-                    if(c==' ')
-                    {
-                        textReturn += Environment.NewLine;
-                    }
-                    else
-                    {
-                        textReturn += c;
-                        if (text[limiter+1]==' ')
-                        {
-                            textReturn += Environment.NewLine;
-                        }
-                        else
-                        {
-                            textReturn += "-" + Environment.NewLine;
-                        }
-                    }
-                    limiter = 0;
-                }
-                else
-                {
-                    textReturn += c;
-                }
-                limiter++;
-            }
-            return textReturn;
         }
     }
 }

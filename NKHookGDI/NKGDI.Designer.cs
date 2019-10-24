@@ -85,6 +85,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "NKGDI";
             this.Text = "NKGDI";
+            this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.Load += new System.EventHandler(this.NKGDI_Load);
             this.notifBox.ResumeLayout(false);

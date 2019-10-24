@@ -23,15 +23,6 @@ namespace NKHook5.API.Events
                 if (cancelled) { continue; }
                 try
                 {
-                    foreach (Tower t in Game.getBTD5().getTowers())
-                    {
-                        if (t.getRotation() > 360.0)
-                        {
-                            t.setRotation(0);
-                            continue;
-                        }
-                        t.setRotation(t.getRotation() + 1);
-                    }
                     Event.Invoke(this, new EventArgs());
                 } catch (NullReferenceException) { }
             }

@@ -14,6 +14,7 @@ namespace NKHook5.API
     public class GDI
     {
         internal delegate void notifyPassthrough(string text);
+        internal delegate void showForm(Form form);
         internal static GDI instance = null;
         internal GDI()
         {
@@ -28,6 +29,11 @@ namespace NKHook5.API
         {
             notifyPassthrough del = new notifyPassthrough(NKGDI.instance.notify);
             NKGDI.instance.Invoke(del, text);
+        }
+        public void showAsSubform(Form form)
+        {
+            showForm del = new showForm(NKGDI.instance.showForm);
+            NKGDI.instance.Invoke(del, form);
         }
     }
 }
