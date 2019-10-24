@@ -1,21 +1,18 @@
 ﻿using Memory;
 using NKHook5.API;
 using NKHook5.API.Events;
+using NKHook5.BootGraphics;
 using NKHook5.Discord;
 using NKHook5.NKHookGDI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-
 
 namespace NKHook5
 {
@@ -31,6 +28,9 @@ namespace NKHook5
     {
 
         public static Mem memlib = new Mem();
+        static BootWindow boot;
+        delegate void closeSplashDel();
+        delegate void splashIsTopmost(bool topMost);
 
         static void Main(string[] args)
         {
@@ -38,6 +38,14 @@ namespace NKHook5
         }
         private static void NKHook5()
         {
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.DoWork += (object sender, DoWorkEventArgs ev) =>
+            {
+                boot = new BootWindow();
+                System.Windows.Forms.Application.Run(boot);
+            };
+            bw.RunWorkerAsync();
+            Thread.Sleep(1000);
             Console.Title = "NKHook5-Console";
             Console.WriteLine("NKHook5 (Unstable 7) Loading...");
             Console.WriteLine("Checking for missing dependancies...");
@@ -66,17 +74,21 @@ namespace NKHook5
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
-            AppDomain.CurrentDomain.ProcessExit += new EventHandler((object sender, EventArgs e) =>
-            {
-                Game.getBTD5().killGame();
-            });
+            //its on another thread so we have to use a delegate
+            //Take away topmost for potential steam log in
+            splashIsTopmost del = new splashIsTopmost(boot.setTopmost);
+            boot.Invoke(del, false);
             GameLauncher.launchProperly();
             Console.ReadLine();
         }
         public static void afterGameLoad(Process proc)
         {
+            //its on another thread so we have to use a delegate
+            //Take away topmost for potential steam log in
+            splashIsTopmost del = new splashIsTopmost(boot.setTopmost);
+            boot.Invoke(del, true);
             new Game(proc);
-            GameEvents.startHandler(memlib);
+            GameEvents.startHandler();
             new TowerShop();
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");
             Console.WriteLine("Game hooked & Events registered!");
@@ -88,9 +100,23 @@ namespace NKHook5
             {
                 memlib.writeMemory(addr.ToString("X"), "string", "https://discord.gg/VADMF2M");
             }
-            NKGDI gdi = new NKGDI(memlib);
-            System.Windows.Forms.Application.EnableVisualStyles();
-            System.Windows.Forms.Application.Run(gdi);
+            BackgroundWorker bw = new BackgroundWorker();
+            bw.DoWork += (object sender, DoWorkEventArgs ev) =>
+            {
+                NKGDI gdi = new NKGDI(memlib);
+                System.Windows.Forms.Application.EnableVisualStyles();
+                System.Windows.Forms.Application.Run(gdi);
+            };
+            bw.RunWorkerAsync();
+
+            GameCloseEvent.Event += (object sender, EventArgs arg) =>
+            {
+                Environment.Exit(0);
+            };
+
+            //its on another thread so we have to use a delegate
+            closeSplashDel del2 = new closeSplashDel(boot.doClose);
+            boot.Invoke(del2);
         }
     }
 }

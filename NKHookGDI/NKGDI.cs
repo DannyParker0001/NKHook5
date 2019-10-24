@@ -69,7 +69,7 @@ namespace NKHook5.NKHookGDI
         [DllImport("user32.dll")]
         private static extern bool SetForegroundWindow(IntPtr hWnd);
 
-
+        //Shit for making the overlay topmost only when the game is focused
         WinEventDelegate winChangeDel = null;
         delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
         [DllImport("user32.dll")]
@@ -78,7 +78,6 @@ namespace NKHook5.NKHookGDI
         private const uint EVENT_SYSTEM_FOREGROUND = 3;
         public void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            Logger.Log("Handle changed!");
             IntPtr handle = GetForegroundWindow();
             if(handle == this.Handle || handle == Game.gameProc.MainWindowHandle)
             {
@@ -181,12 +180,16 @@ namespace NKHook5.NKHookGDI
 
         internal void showForm(Form child)
         {
+            Focus();
+            TopMost = true;
             child.MdiParent = this;
             child.Show();
         }
 
         internal void notify(string text)
         {
+            Focus();
+            TopMost = true;
             System.Windows.Forms.Timer notifier = new System.Windows.Forms.Timer();
             int tickCount = 0;
             notifier.Tick += (object sen, EventArgs arg) =>

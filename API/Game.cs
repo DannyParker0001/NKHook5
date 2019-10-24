@@ -3,6 +3,7 @@ using NKHook5.API.Events;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -137,6 +138,14 @@ namespace NKHook5.API
         public float getTickSpeed()
         {
             return memlib.readFloat("BTD5-Win.exe+008844B0,C4,90");
+        }
+        public Point getWindowLocation()
+        {
+            return new Point(memlib.readInt("BTD5-Win.exe+80EC1C"), memlib.readInt("BTD5-Win.exe+80EC20"));
+        }
+        public Size getWindowSize()
+        {
+            return new Size(memlib.readInt("BTD5-Win.exe+80EC14"), memlib.readInt("BTD5-Win.exe+80EC18"));
         }
 
         /*

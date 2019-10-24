@@ -39,7 +39,7 @@ namespace NKHook5.Discord
                 Details = "Round: " + Game.getBTD5().getRound() + " | Money: " + Game.getBTD5().getMoney() + " | Health: " + Game.getBTD5().getHealth(),
                 State = "Hooked Bloons TD 5"
             });
-            GDI.instance.notify("Presence updated!");
+            //GDI.instance.notify("Presence updated!");
         }
     }
 }

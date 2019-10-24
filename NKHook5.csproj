@@ -91,6 +91,7 @@
     <Compile Include="API\Events\FastForwardDisabledEvent.cs" />
     <Compile Include="API\Events\FastForwardEnabledEvent.cs" />
     <Compile Include="API\Events\FastForwardToggledEvent.cs" />
+    <Compile Include="API\Events\GameCloseEvent.cs" />
     <Compile Include="API\Game.cs" />
     <Compile Include="API\GDI.cs" />
     <Compile Include="API\TDScreen.cs" />
@@ -119,6 +120,12 @@
     <Compile Include="API\Events\SelectedTowerPoppedBloonsChangedEvent.cs" />
     <Compile Include="API\Events\TowerDeleteEvent.cs" />
     <Compile Include="API\Events\TowerPlaceEvent.cs" />
+    <Compile Include="BootGraphics\BootWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BootGraphics\BootWindow.Designer.cs">
+      <DependentUpon>BootWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Discord\RichPresence.cs" />
     <Compile Include="File\FileUnblocker.cs" />
     <Compile Include="Launching\GameLauncher.cs" />
@@ -161,6 +168,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="BootGraphics\BootWindow.resx">
+      <DependentUpon>BootWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NKHookGDI\NKGDI.resx">
       <DependentUpon>NKGDI.cs</DependentUpon>
     </EmbeddedResource>
@@ -173,6 +183,8 @@
     <Content Include="NKHookGDI\nk_hook_gdi_bg_1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\Splash1.png" />
+    <None Include="Resources\Splash.png" />
     <None Include="Resources\OETZTYPE.TTF" />
     <None Include="Resources\ScaleCompare.png" />
     <None Include="Resources\nk_hook_gdi_bg_1.png" />
