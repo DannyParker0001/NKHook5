@@ -1,7 +1,6 @@
 ﻿using Memory;
 using NKHook5.API;
 using NKHook5.API.Events;
-using NKHook5.BootGraphics;
 using NKHook5.Discord;
 using NKHook5.NKHookGDI;
 using System;
@@ -28,9 +27,6 @@ namespace NKHook5
     {
 
         public static Mem memlib = new Mem();
-        static BootWindow boot;
-        delegate void closeSplashDel();
-        delegate void splashIsTopmost(bool topMost);
 
         static void Main(string[] args)
         {
@@ -38,18 +34,17 @@ namespace NKHook5
         }
         private static void NKHook5()
         {
-            BackgroundWorker bw = new BackgroundWorker();
-            bw.DoWork += (object sender, DoWorkEventArgs ev) =>
-            {
-                boot = new BootWindow();
-                System.Windows.Forms.Application.Run(boot);
-            };
-            bw.RunWorkerAsync();
+            Console.WriteLine("Waiting for launch confirmation");
+            BootWindow boot = new BootWindow();
+            System.Windows.Forms.Application.Run(boot);
+        }
+        public static void preGameLoad()
+        {
             Thread.Sleep(1000);
             Console.Title = "NKHook5-Console";
             Console.WriteLine("NKHook5 (Unstable 7) Loading...");
             Console.WriteLine("Checking for missing dependancies...");
-            if (!new FileInfo(Environment.CurrentDirectory+ "\\Newtonsoft.Json.dll").Exists)
+            if (!new FileInfo(Environment.CurrentDirectory + "\\Newtonsoft.Json.dll").Exists)
             {
                 Console.WriteLine("Missing Newtonsoft.Json, downloadng now...");
                 WebClient client = new WebClient();
@@ -74,10 +69,6 @@ namespace NKHook5
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");
-            //its on another thread so we have to use a delegate
-            //Take away topmost for potential steam log in
-            splashIsTopmost del = new splashIsTopmost(boot.setTopmost);
-            boot.Invoke(del, false);
             GameLauncher.launchProperly();
             Console.ReadLine();
         }
@@ -85,8 +76,6 @@ namespace NKHook5
         {
             //its on another thread so we have to use a delegate
             //Take away topmost for potential steam log in
-            splashIsTopmost del = new splashIsTopmost(boot.setTopmost);
-            boot.Invoke(del, true);
             new Game(proc);
             GameEvents.startHandler();
             new TowerShop();
@@ -113,10 +102,6 @@ namespace NKHook5
             {
                 Environment.Exit(0);
             };
-
-            //its on another thread so we have to use a delegate
-            closeSplashDel del2 = new closeSplashDel(boot.doClose);
-            boot.Invoke(del2);
         }
     }
 }
