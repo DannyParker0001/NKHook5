@@ -158,6 +158,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Settings\HookSettings.cs" />
     <Compile Include="Styles\Theme.cs" />
   </ItemGroup>
   <ItemGroup>

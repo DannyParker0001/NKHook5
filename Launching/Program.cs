@@ -1,10 +1,9 @@
 ﻿using Memory;
-using Newtonsoft.Json;
 using NKHook5.API;
 using NKHook5.API.Events;
 using NKHook5.Discord;
 using NKHook5.NKHookGDI;
-using NKHook5.Styles;
+using NKHook5.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,6 +78,28 @@ namespace NKHook5
             File.Create(Environment.CurrentDirectory + "\\darkTheme.json").Close();
             File.WriteAllText(Environment.CurrentDirectory + "\\darkTheme.json", lightString);
             */
+            //Download themes
+            Console.WriteLine("Checking for theme data...");
+            if(!new DirectoryInfo(Environment.CurrentDirectory + "\\Themes").Exists)
+            {
+                new DirectoryInfo(Environment.CurrentDirectory + "\\Themes").Create();
+            }
+            if (!new FileInfo(Environment.CurrentDirectory + "\\Themes\\lightTheme.json").Exists)
+            {
+                Console.WriteLine("Missing Light Theme, downloadng now...");
+                WebClient client = new WebClient();
+                string theme = client.DownloadString("https://raw.githubusercontent.com/DisabledMallis/NKHook5/master/Themes/lightTheme.json");
+                File.Create(Environment.CurrentDirectory + "\\Themes\\lightTheme.json").Close();
+                File.WriteAllText(Environment.CurrentDirectory + "\\Themes\\lightTheme.json", theme);
+            }
+            if (!new FileInfo(Environment.CurrentDirectory + "\\Themes\\darkTheme.json").Exists)
+            {
+                Console.WriteLine("Missing Dark Theme, downloadng now...");
+                WebClient client = new WebClient();
+                string theme = client.DownloadString("https://raw.githubusercontent.com/DisabledMallis/NKHook5/master/Themes/darkTheme.json");
+                File.Create(Environment.CurrentDirectory + "\\Themes\\darkTheme.json").Close();
+                File.WriteAllText(Environment.CurrentDirectory + "\\Themes\\darkTheme.json", theme);
+            }
 
             boot = new BootWindow();
             System.Windows.Forms.Application.Run(boot);
@@ -125,6 +146,11 @@ namespace NKHook5
             {
                 Environment.Exit(0);
             };
+        }
+
+        public static void resetForms()
+        {
+            System.Windows.Forms.Application.Restart();
         }
     }
 }

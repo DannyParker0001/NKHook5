@@ -209,10 +209,10 @@
         private System.Windows.Forms.Button closeButton;
         private System.Windows.Forms.Label versionTag;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button settingsButton;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Button discordButton;
         private System.Windows.Forms.Label nkhLabel;
         private System.Windows.Forms.Label statusLabel;
+        internal System.Windows.Forms.Button settingsButton;
     }
 }

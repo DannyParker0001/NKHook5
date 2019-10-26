@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using NKHook5.Properties;
+using NKHook5.Settings;
 using NKHook5.Styles;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace NKHook5
         Font gameFont;
         Font gameFontSmall;
         private PrivateFontCollection fonts = new PrivateFontCollection();
+        internal SettingsWindow settingsWindow;
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
@@ -44,7 +46,18 @@ namespace NKHook5
             gameFont = new Font(fonts.Families[0], 120.0F);
             gameFontSmall = new Font(fonts.Families[0], 20.0F);
 
-            string json = File.ReadAllText(Environment.CurrentDirectory + "/Themes/darkTheme.json");
+            //Check for settings
+            if (!new FileInfo(Environment.CurrentDirectory + "\\settings.json").Exists)
+            {
+                FileInfo settingsFile = new FileInfo(Environment.CurrentDirectory + "\\settings.json");
+                settingsFile.Create().Close();
+                File.WriteAllText(settingsFile.FullName, JsonConvert.SerializeObject(new HookSettings()));
+            }
+
+            //read settings
+            string settings = File.ReadAllText(Environment.CurrentDirectory + "/settings.json");
+            string themeName = JsonConvert.DeserializeObject<HookSettings>(settings).theme;
+            string json = File.ReadAllText(Environment.CurrentDirectory + "/Themes/" + themeName + ".json");
             Theme theme=JsonConvert.DeserializeObject<Theme>(json);
             this.BackColor = theme.mainColor;
             this.nkhLabel.BackColor = theme.mainColor;
@@ -130,17 +143,20 @@ namespace NKHook5
         private void SettingsButton_Click(object sender, EventArgs e)
         {
             statusLabel.Text = "Opening settings...";
+            settingsWindow = new SettingsWindow();
+            settingsWindow.Show();
         }
 
         private void DiscordButton_Click(object sender, EventArgs e)
         {
             Process.Start("https://discord.gg/VADMF2M");
         }
-        public const int WM_NCLBUTTONDOWN = 0xA1;
-        public const int HT_CAPTION = 0x2;
+
 
 
         //Drag anywhere
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
