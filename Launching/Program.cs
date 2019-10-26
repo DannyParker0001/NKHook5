@@ -1,12 +1,15 @@
 ﻿using Memory;
+using Newtonsoft.Json;
 using NKHook5.API;
 using NKHook5.API.Events;
 using NKHook5.Discord;
 using NKHook5.NKHookGDI;
+using NKHook5.Styles;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -27,6 +30,7 @@ namespace NKHook5
     {
 
         public static Mem memlib = new Mem();
+        static BootWindow boot;
 
         static void Main(string[] args)
         {
@@ -34,15 +38,6 @@ namespace NKHook5
         }
         private static void NKHook5()
         {
-            Console.WriteLine("Waiting for launch confirmation");
-            BootWindow boot = new BootWindow();
-            System.Windows.Forms.Application.Run(boot);
-        }
-        public static void preGameLoad()
-        {
-            Thread.Sleep(1000);
-            Console.Title = "NKHook5-Console";
-            Console.WriteLine("NKHook5 (" + Version.label + ") Loading...");
             Console.WriteLine("Checking for missing dependancies...");
             if (!new FileInfo(Environment.CurrentDirectory + "\\Newtonsoft.Json.dll").Exists)
             {
@@ -63,9 +58,37 @@ namespace NKHook5
                 Console.WriteLine("Missing DiscordRPC.dll, downloadng now...");
                 WebClient client = new WebClient();
                 client.DownloadFile("https://ci.appveyor.com/api/buildjobs/6drmg8lmctuw2ec5/artifacts/artifacts/DiscordRPC.dll", Environment.CurrentDirectory + "\\DiscordRPC.dll");
-                Assembly.LoadFrom(Environment.CurrentDirectory + "\\DiscordRPC.dll");
+                try
+                {
+                    Assembly.LoadFrom(Environment.CurrentDirectory + "\\DiscordRPC.dll");
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Failed to download DiscordRPC.dll!");
+                }
             }
             Console.WriteLine("Dependancies loaded!");
+            Console.WriteLine("Waiting for launch confirmation");
+
+            //Make theme
+            /*
+            Theme darkTheme = new Theme();
+            darkTheme.mainColor = Color.FromArgb(10,10,10);
+            darkTheme.textColor = Color.White;
+            string lightString=JsonConvert.SerializeObject(darkTheme);
+            File.Create(Environment.CurrentDirectory + "\\darkTheme.json").Close();
+            File.WriteAllText(Environment.CurrentDirectory + "\\darkTheme.json", lightString);
+            */
+
+            boot = new BootWindow();
+            System.Windows.Forms.Application.Run(boot);
+        }
+        public static void preGameLoad()
+        {
+            Thread.Sleep(100);
+            boot.Close();
+            Console.Title = "NKHook5-Console";
+            Console.WriteLine("NKHook5 (" + Version.label + ") Loading...");
             Console.WriteLine("NKHook Discord: https://discord.gg/VADMF2M");
             Console.WriteLine("Thanks to NewAgeSoftware for providing an API for memory hacking.");
             Console.WriteLine("More info can be found at: https://github.com/erfg12/memory.dll");

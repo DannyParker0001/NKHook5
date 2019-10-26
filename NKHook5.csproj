@@ -131,6 +131,12 @@
     <Compile Include="File\FileUnblocker.cs" />
     <Compile Include="Launching\GameLauncher.cs" />
     <Compile Include="API\Logger.cs" />
+    <Compile Include="Launching\SettingsWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Launching\SettingsWindow.Designer.cs">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Launching\SteamUtils.cs" />
     <Compile Include="Launching\Version.cs" />
     <Compile Include="Memory\FreSus.cs" />
@@ -152,10 +158,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Styles\Theme.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="app.manifest" />
+    <None Include="Themes\darkTheme.json" />
+    <None Include="Themes\lightTheme.json" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -172,6 +181,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Launching\BootWindow.resx">
       <DependentUpon>BootWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Launching\SettingsWindow.resx">
+      <DependentUpon>SettingsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NKHookGDI\NKGDI.resx">
       <DependentUpon>NKGDI.cs</DependentUpon>

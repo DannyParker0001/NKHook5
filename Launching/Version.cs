@@ -8,7 +8,7 @@ namespace NKHook5
 {
     internal class Version
     {
-        public static string tag = "Unstable 7";
-        public static string label = "0.0.0.7";
+        public static string tag = "Unstable 8";
+        public static string label = "0.0.0.8";
     }
 }

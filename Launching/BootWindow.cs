@@ -1,11 +1,17 @@
-﻿using NKHook5.Properties;
+﻿using Newtonsoft.Json;
+using NKHook5.Properties;
+using NKHook5.Styles;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Text;
+using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,23 +22,44 @@ namespace NKHook5
     {
         int prog = 0;
         Bitmap image = new Bitmap(Resources.Rainbow);
+        Font gameFont;
+        Font gameFontSmall;
+        private PrivateFontCollection fonts = new PrivateFontCollection();
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx(IntPtr pbFont, uint cbFont, IntPtr pdv, [System.Runtime.InteropServices.In] ref uint pcFonts);
         public BootWindow()
         {
             InitializeComponent();
-        }
+            /*
+             * Get game font
+             */
+            byte[] fontData = Properties.Resources.Oetztype;
+            IntPtr fontPtr = Marshal.AllocCoTaskMem(fontData.Length);
+            Marshal.Copy(fontData, 0, fontPtr, fontData.Length);
+            uint dummy = 0;
+            fonts.AddMemoryFont(fontPtr, Properties.Resources.Oetztype.Length);
+            AddFontMemResourceEx(fontPtr, (uint)Properties.Resources.Oetztype.Length, IntPtr.Zero, ref dummy);
+            System.Runtime.InteropServices.Marshal.FreeCoTaskMem(fontPtr);
+            gameFont = new Font(fonts.Families[0], 120.0F);
+            gameFontSmall = new Font(fonts.Families[0], 20.0F);
 
-        public void doClose()
-        {
-            this.Close();
-        }
-
-        public void setTopmost(bool topMost)
-        {
-            this.TopMost = topMost;
-            if (topMost == true)
-            {
-                Focus();
-            }
+            string json = File.ReadAllText(Environment.CurrentDirectory + "/Themes/darkTheme.json");
+            Theme theme=JsonConvert.DeserializeObject<Theme>(json);
+            this.BackColor = theme.mainColor;
+            this.nkhLabel.BackColor = theme.mainColor;
+            this.statusLabel.BackColor = theme.mainColor;
+            this.nkhLabel.ForeColor = theme.textColor;
+            this.statusLabel.ForeColor = theme.textColor;
+            this.closeButton.BackColor = theme.mainColor;
+            this.settingsButton.ForeColor = theme.textColor;
+            this.settingsButton.BackColor = theme.mainColor;
+            this.launchButton.ForeColor = theme.textColor;
+            this.launchButton.BackColor = theme.mainColor;
+            this.discordButton.ForeColor = theme.textColor;
+            this.discordButton.BackColor = theme.mainColor;
+            this.versionTag.ForeColor = theme.textColor;
+            this.versionTag.BackColor = theme.mainColor;
         }
 
         private void splash_load(object sender, EventArgs e)
@@ -41,8 +68,10 @@ namespace NKHook5
             Timer panRainbowTimer = new Timer();
             panRainbowTimer.Tick += (object s, EventArgs a) =>
             {
+                pictureBox4.Refresh();
                 pictureBox3.Refresh();
-                prog-=10;
+                pictureBox2.Refresh();
+                prog -=20;
                 if (prog < -image.Width+108)
                 {
                     prog = 0;
@@ -51,11 +80,15 @@ namespace NKHook5
             panRainbowTimer.Interval = 1;
             panRainbowTimer.Start();
             versionTag.Text = Version.tag;
+
+            nkhLabel.Font = gameFont;
+            statusLabel.Font = gameFontSmall;
         }
 
         private void LaunchButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            statusLabel.Text = "Launching...";
+            statusLabel.Refresh();
             Program.preGameLoad();
         }
 
@@ -92,6 +125,33 @@ namespace NKHook5
         private void Button1_Click(object sender, EventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void SettingsButton_Click(object sender, EventArgs e)
+        {
+            statusLabel.Text = "Opening settings...";
+        }
+
+        private void DiscordButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("https://discord.gg/VADMF2M");
+        }
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+
+
+        //Drag anywhere
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
+        private void doDrag(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
         }
     }
 }
