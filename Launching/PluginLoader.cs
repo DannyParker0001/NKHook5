@@ -1,5 +1,7 @@
-﻿using NKHook5.API;
+﻿using Newtonsoft.Json;
+using NKHook5.API;
 using NKHook5.FileFix;
+using NKHook5.Settings;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,6 +17,8 @@ namespace NKHook5
     {
         public static void loadPlugins()
         {
+            string settings = File.ReadAllText(Environment.CurrentDirectory + "/settings.json");
+            HookSettings hookSettings = JsonConvert.DeserializeObject<HookSettings>(settings);
             BackgroundWorker pluginWorker = new BackgroundWorker();
             pluginWorker.DoWork += (object sender, DoWorkEventArgs e) =>
             {
@@ -29,6 +33,11 @@ namespace NKHook5
                     if (!file.Name.Contains(".dll"))
                     {
                         Logger.Log("Skipping " + file.Name + " as it isnt a .dll");
+                        continue;
+                    }
+                    if (!hookSettings.enabledPlugins.Contains(file.Name))
+                    {
+                        Logger.Log("Skipping " + file.Name + " as it isnt enabled.");
                         continue;
                     }
                     BackgroundWorker pluginLoadWorker = new BackgroundWorker();

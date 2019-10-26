@@ -101,6 +101,11 @@ namespace NKHook5
                 File.WriteAllText(Environment.CurrentDirectory + "\\Themes\\darkTheme.json", theme);
             }
 
+            if (!new DirectoryInfo(Environment.CurrentDirectory + "\\Plugins").Exists)
+            {
+                new DirectoryInfo(Environment.CurrentDirectory + "\\Plugins").Create();
+            }
+
             boot = new BootWindow();
             System.Windows.Forms.Application.Run(boot);
         }

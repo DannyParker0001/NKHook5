@@ -48,10 +48,28 @@ namespace NKHook5
             this.selectThemeLabel.BackColor = theme.mainColor;
             this.themeListBox.BackColor = theme.mainColor;
             this.themeListBox.ForeColor = theme.textColor;
+            this.pluginLabel.ForeColor = theme.textColor;
+            this.pluginLabel.BackColor = theme.mainColor;
+            this.pluginList.BackColor = theme.mainColor;
+            this.pluginList.ForeColor = theme.textColor;
+            this.closeButton.BackColor = theme.mainColor;
 
-            foreach(FileInfo finfo in new DirectoryInfo(Environment.CurrentDirectory + "\\Themes").GetFiles())
+            HookSettings hookSettings = JsonConvert.DeserializeObject<HookSettings>(settings);
+
+            foreach (FileInfo finfo in new DirectoryInfo(Environment.CurrentDirectory + "\\Themes").GetFiles())
             {
                 this.themeListBox.Items.Add(finfo.Name.Replace(".json",""));
+            }
+            foreach (FileInfo finfo in new DirectoryInfo(Environment.CurrentDirectory + "\\Plugins").GetFiles())
+            {
+                this.pluginList.Items.Add(finfo.Name);
+            }
+            foreach (ListViewItem chkd in pluginList.Items)
+            {
+                if (hookSettings.enabledPlugins.Contains(chkd.Text))
+                {
+                    chkd.Checked = true;
+                }
             }
         }
 
@@ -62,6 +80,24 @@ namespace NKHook5
             hookSettings.theme = themeListBox.SelectedItem.ToString();
             File.WriteAllText(Environment.CurrentDirectory + "/settings.json", JsonConvert.SerializeObject(hookSettings));
             Program.resetForms();
+        }
+
+        private void PluginList_ItemCheck(object sender, ItemCheckedEventArgs e)
+        {
+            string settings = File.ReadAllText(Environment.CurrentDirectory + "/settings.json");
+            HookSettings hookSettings = JsonConvert.DeserializeObject<HookSettings>(settings);
+            List<string> checks = new List<string>();
+            foreach(ListViewItem chkd in pluginList.CheckedItems)
+            {
+                checks.Add(chkd.Text);
+            }
+            hookSettings.enabledPlugins = checks;
+            File.WriteAllText(Environment.CurrentDirectory + "/settings.json", JsonConvert.SerializeObject(hookSettings));
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
