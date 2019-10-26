@@ -42,7 +42,7 @@ namespace NKHook5
         {
             Thread.Sleep(1000);
             Console.Title = "NKHook5-Console";
-            Console.WriteLine("NKHook5 (Unstable 7) Loading...");
+            Console.WriteLine("NKHook5 (" + Version.label + ") Loading...");
             Console.WriteLine("Checking for missing dependancies...");
             if (!new FileInfo(Environment.CurrentDirectory + "\\Newtonsoft.Json.dll").Exists)
             {

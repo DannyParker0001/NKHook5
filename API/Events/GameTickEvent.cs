@@ -23,12 +23,6 @@ namespace NKHook5.API.Events
                 if (cancelled) { continue; }
                 try
                 {
-                    int count = 0;
-                    foreach(Bloon b in Game.getBTD5().getBloons())
-                    {
-                        Logger.Log("Bloon: " + count + " Type: " + b.getType());
-                        count++;
-                    }
                     Event.Invoke(this, new EventArgs());
                 } catch (NullReferenceException) { }
             }

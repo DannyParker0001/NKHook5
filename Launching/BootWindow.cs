@@ -50,6 +50,7 @@ namespace NKHook5
             };
             panRainbowTimer.Interval = 1;
             panRainbowTimer.Start();
+            versionTag.Text = Version.tag;
         }
 
         private void LaunchButton_Click(object sender, EventArgs e)
@@ -86,6 +87,11 @@ namespace NKHook5
             Graphics g = e.Graphics;
             g.Clear(Color.Black);
             g.DrawImage(image,prog,0, image.Width, image.Height);
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
         }
     }
 }

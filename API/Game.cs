@@ -82,9 +82,7 @@ namespace NKHook5.API
         public uint getBloonCount()
         {
             uint lastBloon = memlib.getCode("BTD5-Win.exe+00884280,0,74,8,0").ToUInt32();
-            Logger.Log(lastBloon.ToString());
             uint firstBloon = memlib.getCode("BTD5-Win.exe+00884280,0,74,4,0").ToUInt32();
-            Logger.Log(firstBloon.ToString());
             return (lastBloon - firstBloon) / 4;
         }
         public double getMoney()

@@ -132,6 +132,7 @@
     <Compile Include="Launching\GameLauncher.cs" />
     <Compile Include="API\Logger.cs" />
     <Compile Include="Launching\SteamUtils.cs" />
+    <Compile Include="Launching\Version.cs" />
     <Compile Include="Memory\FreSus.cs" />
     <Compile Include="Memory\MemAPI.cs" />
     <Compile Include="Memory\MemoryRegionResult.cs" />
