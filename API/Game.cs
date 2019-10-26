@@ -73,9 +73,9 @@ namespace NKHook5.API
         public List<Bloon> getBloons()
         {
             List<Bloon> bloons = new List<Bloon>();
-            for(int i = 0; i < (getBloonCount()); i++)
+            for(int i = 0; i < (getBloonCount()*4); i+=0x4)
             {
-                bloons.Add(new Bloon(memlib.getCode("BTD5-Win.exe+00884280,0,74,4," + i.ToString("X") + ",0").ToUInt32()));
+                bloons.Add(new Bloon(memlib.getCode("BTD5-Win.exe+00884280,0,74,4," + i.ToString("X")+",0").ToUInt32()));
             }
             return bloons;
         }

@@ -8,20 +8,20 @@ namespace NKHook5.API
 {
     public enum BloonType
     {
-        ExceptionBloon=0,
-        ZOMG=36272,
-        BFB=12736,
-        MOAB=62136,
-        Crematic=15520,
-        Rainbow=36752,
-        Zebra=36080,
-        Metal=15616,
-        White=36176,
-        Black=15808,
-        Pink=15136,
-        Yellow=35984,
-        Green=16000,
-        Blue=15328,
-        Red=36848
+        ExceptionBloon = 0,
+        Red = 1,
+        Blue = 2,
+        Green = 3,
+        Yellow = 4,
+        Pink = 5,
+        Black = 6,
+        White = 7,
+        Lead = 8,
+        Zebra = 9,
+        Rainbow = 10,
+        Crematic = 11,
+        Moab = 13,
+        BFB = 14,
+        Zomg = 15
     }
 }

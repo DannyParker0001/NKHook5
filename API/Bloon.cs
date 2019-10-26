@@ -53,18 +53,19 @@ namespace NKHook5.API
             uint offset = bloonAddr + 0x27C;
             return memlib.readFloat(offset.ToString("X"));
         }
-        public int getType()
+        /*
+         * Huge TY to Danny Parker for finding this shit.
+         */
+        public BloonType getType()
         {
-            uint type = bloonAddr + 0x1A8;
             try
             {
-                return /*(BloonType)Enum.Parse(typeof(BloonType), */memlib.readInt(type.ToString("X"));//.ToString());
+                return (BloonType)Enum.Parse(typeof(BloonType), Math.Log(memlib.readInt((bloonAddr + 0x1FC).ToString("X") + ",0x28"), 2).ToString());
             }
             catch (Exception)
             {
             }
-            //return BloonType.ExceptionBloon;
-            return 0;
+            return BloonType.ExceptionBloon;
         }
 
         /*
