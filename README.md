@@ -1,5 +1,5 @@
 # NKHook5
-A Bloons TD 5 plugin/mod loader that uses memory.dll for game manipulation
+A Bloons TD 5 plugin/mod loader that uses memory.dll for game manipulation. More on memory.dll [here](https://github.com/erfg12/memory.dll) and [here](https://discord.gg/bVNQNzJ).
 
 ## Releases
 https://github.com/DisabledMallis/NKHook5/releases
