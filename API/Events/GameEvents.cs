@@ -61,6 +61,7 @@ namespace NKHook5.API.Events
             //Tower events
             new TowerPlaceEvent().startAsync();
             new TowerDeleteEvent().startAsync();
+            new TowerUpgradeEvent().startAsync();
             Thread.Sleep(1);
 
             //Fast forward events

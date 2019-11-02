@@ -22,6 +22,7 @@ namespace NKHook5.API
         Crematic = 11,
         Moab = 13,
         BFB = 14,
-        Zomg = 15
+        Zomg = 15,
+        Blastapopoulos = 17
     }
 }

@@ -99,5 +99,15 @@ namespace NKHook5
         {
             this.Close();
         }
+
+        private void themeSelectionChanged(object sender, EventArgs e)
+        {
+            string settings = File.ReadAllText(Environment.CurrentDirectory + "/settings.json");
+            HookSettings hookSettings = JsonConvert.DeserializeObject<HookSettings>(settings);
+            hookSettings.theme = themeListBox.SelectedItem.ToString();
+            string newSettings = JsonConvert.SerializeObject(hookSettings);
+            File.WriteAllText(Environment.CurrentDirectory + "/settings.json", newSettings);
+            Program.resetForms();
+        }
     }
 }

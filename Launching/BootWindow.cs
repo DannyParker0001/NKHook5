@@ -101,6 +101,10 @@ namespace NKHook5
         private void LaunchButton_Click(object sender, EventArgs e)
         {
             statusLabel.Text = "Launching...";
+            if(settingsWindow!=null)
+            {
+                settingsWindow.Dispose();
+            }
             statusLabel.Refresh();
             Program.preGameLoad();
         }
@@ -143,7 +147,10 @@ namespace NKHook5
         private void SettingsButton_Click(object sender, EventArgs e)
         {
             statusLabel.Text = "Opening settings...";
-            settingsWindow = new SettingsWindow();
+            if (settingsWindow == null || settingsWindow.IsDisposed)
+            {
+                settingsWindow = new SettingsWindow();
+            }
             settingsWindow.Show();
         }
 

@@ -2,6 +2,7 @@
 using NKHook5.API;
 using NKHook5.API.Events;
 using NKHook5.Discord;
+using NKHook5.Injection;
 using NKHook5.NKHookGDI;
 using NKHook5.Settings;
 using System;
@@ -123,11 +124,11 @@ namespace NKHook5
         }
         public static void afterGameLoad(Process proc)
         {
-            //its on another thread so we have to use a delegate
-            //Take away topmost for potential steam log in
             new Game(proc);
             GameEvents.startHandler();
             new TowerShop();
+            new InjectionManager();
+            InjectionManager.manager.injectAll();
             Game.getBTD5().setGameTitle("Bloons TD 5 - Game attached with NKHook5");
             Console.WriteLine("Game hooked & Events registered!");
             RichPresence.startRPC();

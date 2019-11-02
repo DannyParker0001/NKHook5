@@ -45,9 +45,9 @@ namespace NKHook5
                     {
                         try
                         {
-                            //Logger.Log("Unblocking " + file.Name);
+                            Logger.Log("Unblocking " + file.Name);
                             FileUnblocker.Unblock(file.FullName);
-                            //Logger.Log("Attempting to load " + file.Name);
+                            Logger.Log("Attempting to load " + file.Name);
                             Assembly pluginAsm = Assembly.LoadFrom(file.FullName);
                             Type pluginType = typeof(NkPlugin);
                             foreach (Type t in pluginAsm.GetTypes())
@@ -55,10 +55,10 @@ namespace NKHook5
                                 //Logger.Log("Found class " + t.Name);
                                 if (pluginType.IsAssignableFrom(t))
                                 {
-                                    //Logger.Log("Found " + t.Name + " to be assignable");
+                                    Logger.Log("Found " + t.Name + " to be assignable");
                                     NkPlugin plugin = (NkPlugin)Activator.CreateInstance(t);
                                     plugin.NkLoad();
-                                    //Logger.Log("Loaded " + t.Name + " via NkPlugin load function");
+                                    Logger.Log("Loaded " + t.Name + " via NkPlugin load function");
                                 }
                             }
                         }

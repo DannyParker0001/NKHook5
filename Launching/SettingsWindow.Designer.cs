@@ -44,6 +44,7 @@
             this.themeListBox.Name = "themeListBox";
             this.themeListBox.Size = new System.Drawing.Size(220, 394);
             this.themeListBox.TabIndex = 0;
+            this.themeListBox.SelectedIndexChanged += new System.EventHandler(this.themeSelectionChanged);
             // 
             // selectThemeLabel
             // 

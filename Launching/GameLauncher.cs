@@ -23,7 +23,7 @@ namespace NKHook5
                 Console.WriteLine("Waiting for game...");
                 Logger.Log("BOOT DEBUG: Install Dir: " + SteamUtils.GetGameDir(SteamUtils.BTD5AppID, SteamUtils.BTD5Name));
                 RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam\\Apps\\306020");
-                if((int)key.GetValue("Installed") < 1)
+                if ((int)key.GetValue("Installed") < 1)
                 {
                     Logger.Log("BTD5 isnt installed, according to steam.");
                 }
@@ -34,7 +34,7 @@ namespace NKHook5
                         if ((int)key.GetValue("Running") > 0)
                         {
                             Program.memlib.OpenProcess("BTD5-Win");
-                            Program.afterGameLoad(System.Diagnostics.Process.GetProcessesByName("BTD5-Win")[0]);
+                            Program.afterGameLoad(Program.memlib.theProc);
                             break;
                         }
                         else

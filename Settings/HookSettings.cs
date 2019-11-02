@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace NKHook5.Settings
 {
+    /*
+     * This class is under the GPL License. Use it however youd like, IDGAF
+     */
     public class HookSettings
     {
         public string theme = "lightTheme";
