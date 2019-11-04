@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
+using NKHook5.WinPE;
 
 namespace NKHook5
 {
@@ -21,11 +23,29 @@ namespace NKHook5
             {
                 Thread.Sleep(1000);
                 Console.WriteLine("Waiting for game...");
-                Logger.Log("BOOT DEBUG: Install Dir: " + SteamUtils.GetGameDir(SteamUtils.BTD5AppID, SteamUtils.BTD5Name));
+                string Btd5Dir = SteamUtils.GetGameDir(SteamUtils.BTD5AppID, SteamUtils.BTD5Name);
+                Logger.Log("BOOT DEBUG: Install Dir: " + Btd5Dir);
                 RegistryKey key = Registry.CurrentUser.OpenSubKey("Software\\Valve\\Steam\\Apps\\306020");
                 if ((int)key.GetValue("Installed") < 1)
                 {
                     Logger.Log("BTD5 isnt installed, according to steam.");
+                }
+                else
+                {
+                    //string btd5Exe = Btd5Dir + "\\BTD5-Win.exe";
+                    string btd5Exe = @"C:\Users\ben\source\repos\InjectionTest\Debug\Payload.dll";
+
+                    byte[] btd5bin = File.ReadAllBytes(btd5Exe);
+                    unsafe
+                    {
+                        fixed (byte* pBin = btd5bin)
+                        {
+                            PE.DumpExportsFromFile32(pBin);
+                        }
+                    }
+
+                    
+                    
                 }
                 try
                 {

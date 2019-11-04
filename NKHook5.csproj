@@ -122,6 +122,7 @@
     <Compile Include="API\Events\SelectedTowerPoppedBloonsChangedEvent.cs" />
     <Compile Include="API\Events\TowerDeleteEvent.cs" />
     <Compile Include="API\Events\TowerPlaceEvent.cs" />
+    <Compile Include="File\Pe.cs" />
     <Compile Include="Injection\InjectionManager.cs" />
     <Compile Include="Injection\UpgradeInjection.cs" />
     <Compile Include="Launching\BootWindow.cs">
